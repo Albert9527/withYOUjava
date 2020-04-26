@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/withyou?useUnicode=true&characterEncoding=utf-8&serverTimezone=CTT
+    username: root
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+#下划线和驼峰命名映射
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.zd1024.withyou.entity
+  dao-locations: classpath*:/mapper/*.xml
+
+#配置日志级别
+logging:
+  level:
+    root: info
+    com.example: debug
+  file:
+    path: log/blog-dev.log
+server:
+  port: 8080

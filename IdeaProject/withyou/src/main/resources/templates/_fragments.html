@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title th:replace="${title}">首页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/mine.css" th:href="@{/css/mine.css}">
+</head>
+<body>
+<!--导航-->
+<div th:fragment="navmenu(n)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container width-martch">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui teal header item">withYOU后台管理</h2>
+            <!-- <i>标签，用于超链接引入图标？-->
+            <a href="#" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i
+                    class="mini home icon"></i>首页</a>
+            <a href="#" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i
+                    class="mini home icon"></i>博客</a>
+            <a href="#" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'"><i
+                    class="mini idea icon"></i>分类</a>
+            <!--<a href="#" th:href="@{/admin/tags}" class="m-item item m-mobile-hide" th:classappend="${n==4} ? 'active'"><i class="mini tags icon"></i>标签</a>
+            -->
+            <div class="right m-item item m-mobile-hide">
+                <div class="right menu">
+                    <div class="ui dropdown item">
+                        <div class="text">
+                            <img src="https://unsplash.it/100/100?image=1005" class="ui avatar image">
+                            <span th:text="${session.user.username}">Albert</span>
+                        </div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <a href="#" th:href="@{/admin/logout}" class="item">注销</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-top-right m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</div>
+
+<div class="four wide column height-martch">
+    <div class="ui inverted vertical left menu height-martch">
+
+        <div th:fragment="menu(n,x)" class="container">
+            <div class="header item" th:classappend="${n==0} ? 'active teal'">
+                首页
+            </div>
+            <div>
+                <div class="ui item userdiv" th:classappend="${n==1} ? 'active teal'">
+                    用户管理 <i class="dropdown icon right"></i>
+                </div>
+                <div class="item useritem menu">
+                    <a href="#" th:href="@{/admin/user/(current=1)}" class="item" th:classappend="${n==1&&x==1} ? 'active grey'">普通用户信息</a>
+                    <a href="#" th:href="@{/admin/volunteer/(current=1)}" class="item" th:classappend="${n==1&&x==2} ? 'active grey'">志愿者信息</a>
+                </div>
+            </div>
+
+            <div>
+                <div class="ui item checkdiv" th:classappend="${n==2} ? 'active teal'">
+                    审核管理 <i class="dropdown icon right"></i>
+                </div>
+                <div class="item checkitem menu">
+                    <a class="item" th:classappend="${n==2&&x==1} ? 'active grey'">动态审核</a>
+                    <a class="item" th:classappend="${n==2&&x==2} ? 'active grey'">志愿者认证</a>
+                    <a class="item" th:href="@{/admin/activity/(current=1,state=0)}" th:classappend="${n==2&&x==3} ? 'active grey'">活动组织申请</a>
+                </div>
+            </div>
+
+            <div>
+                <div class="ui item recommenddiv" th:classappend="${n==3} ? 'active teal'">
+                    资源推荐管理 <i class="dropdown icon right"></i>
+                </div>
+                <div class="item recommenditem menu">
+                    <a class="item" th:href="@{/admin/recmd/(current=1,ctgy='book')}"
+                       th:classappend="${n==3&&x==1} ? 'active grey'">书籍推荐</a>
+                    <a class="item" th:href="@{/admin/recmd/(current=1,ctgy='music')}"
+                       th:classappend="${n==3&&x==2} ? 'active grey'">音乐推荐</a>
+                    <a class="item" th:href="@{/admin/recmd/(current=1,ctgy='videos')}"
+                       th:classappend="${n==3&&x==3} ? 'active grey'">电影推荐</a>
+                    <a class="item"  th:href="@{/admin/recmd/(current=1,ctgy='cureplan')}"
+                       th:classappend="${n==3&&x==4} ? 'active grey'">自疗方案推荐</a>
+
+                </div>
+            </div>
+            <div>
+                <div class="ui item recommenddiv" th:classappend="${n==4} ? 'active teal'">
+                    题库管理 <i class="dropdown icon right"></i>
+                </div>
+                <div class="item recommenditem menu">
+                    <a class="item" th:classappend="${n==4&&x==1} ? 'active grey'">抑郁自测题库</a>
+                    <a class="item" th:classappend="${n==4&&x==2} ? 'active grey'">志愿者题库</a>
+
+                </div>
+            </div>
+
+            <!-- <div>
+                 <div class="ui item userdiv">
+                     审核管理 <i class="dropdown icon right"></i>
+                 </div>
+                 <div class="item useritem menu">
+                     <a class="active item">动态审核</a>
+                     <a class="item">志愿者信息</a>
+                 </div>
+             </div>-->
+        </div>
+    </div>
+</div>
+
+
+<!--底部footer-->
+<footer th:fragment="footer" class="ui inverted vertical segment">
+    <div class="ui center aligned container">
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright @ 2020 Designed by Albert</p>
+    </div>
+</footer>
+
+<th:block th:fragment="script">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+</th:block>
+</body>
+</html>

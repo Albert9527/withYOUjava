@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>首页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/mine.css">
+</head>
+<body>
+
+<!--导航-->
+<div th:replace="_fragments :: navmenu(1)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container width-martch">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui teal header item">withYOU后台管理</h2>
+            <!-- <i>标签，用于超链接引入图标？-->
+            <a href="#" class="active m-item item m-mobile-hide"><i class="mini home icon"></i>博客</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="mini idea icon"></i>分类</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="mini tags icon"></i>标签</a>
+            <div class="right m-item item m-mobile-hide">
+                <div class="right menu">
+                    <div class="ui dropdown item">
+                        <div class="text">
+                            <img src="https://unsplash.it/100/100?image=1005" alt="" class="ui avatar image">
+                            Albert
+                        </div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <a href="#" class="item">注销</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-top-right m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</div>
+
+<!--body content-->
+<div class="martch">
+    <div class="ui container martch">
+        <div class="ui stackable grid height-martch">
+            <div class="four wide column height-martch">
+                <div class="ui inverted vertical left menu height-martch">
+                    <div th:replace="_fragments :: menu(1,2)"  class="container">
+                    <div class="header item">
+                       首页
+                    </div>
+                    <div>
+                        <div class="ui active teal item userdiv">
+                            用户管理 <i class="dropdown icon right"></i>
+                        </div>
+                        <div class="item useritem menu">
+                            <a class="active item">普通用户信息</a>
+                            <a class="item">志愿者信息</a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="ui active item checkdiv">
+                            审核管理 <i class="dropdown icon right"></i>
+                        </div>
+                        <div class="item checkitem menu">
+                            <a class="item">动态审核</a>
+                            <a class="item">志愿者信息</a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="ui item recommenddiv">
+                            资源推荐管理 <i class="dropdown icon right"></i>
+                        </div>
+                        <div class="item recommenditem menu">
+                            <a class="item">动态审核</a>
+                            <a class="item">志愿者信息</a>
+                        </div>
+                    </div>
+
+                    <!-- <div>
+                         <div class="ui item userdiv">
+                             审核管理 <i class="dropdown icon right"></i>
+                         </div>
+                         <div class="item useritem menu">
+                             <a class="active item">动态审核</a>
+                             <a class="item">志愿者信息</a>
+                         </div>
+                     </div>-->
+                </div>
+                </div>
+            </div>
+
+            <!--右边表格栏-->
+            <div class="eleven wide column" style="margin-top:50px!important;">
+                <div class="ui container">
+                    <form action="#" method="post" class="ui segment form">
+                        <!--隐含域，用于传参-->
+                        <input type="hidden" name="page">
+                        <div class="inline fields">
+                            <div class="field">
+                                <input type="text" name="title" placeholder="标题">
+                            </div>
+                            <div class="field">
+                                <div class="ui selection dropdown">
+                                    <input type="hidden" name="type">
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">分类</div>
+                                    <div class="menu">
+                                        <div class="item" data-value="1">错误日志</div>
+                                        <div class="item" data-value="1">开发者手册</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" id="recommend" name="recommend">
+                                    <label for="recommend">推荐</label>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <button class="ui mini teal basic button">
+                                    <i class="search icon"></i>搜索
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="table-container">
+                        <table th:fragment="userList" class="ui celled table martch">
+                            <thead>
+                            <th>序号</th>
+                            <th>用户昵称</th>
+                            <th>用户简介</th>
+                            <th>头像</th>
+                            <th>创建时间</th>
+                            <th>当前地址</th>
+                            <th>操作</th>
+                            </thead>
+                            <tbody>
+                            <tr th:each="vltuser:${vltuser.datalist}">
+                                <td>1</td>
+                                <td th:text="${vltuser.nickname}">1</td>
+                                <td th:text="${vltuser.intro}">普通用户</td>
+                                <td th:text="${vltuser.avatar}" class="a">头像地址</td>
+                                <td th:text="${vltuser.location}">翻斗街翻斗花园</td>
+                                <td th:text="${vltuser.createTime}">2020-04-12</td>
+                                <td>
+                                    <a href="#" class="ui mini teal basic button">编辑</a>
+                                    <a href="#" class="ui mini red basic button">删除</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th colspan="7">
+                                    <div class="ui mini floated pagination menu" th:if="${vltuser.pages}>1">
+                                        <a onclick="page(this)" th:attr="data-page=${userVo.current}-1" class="item"
+                                           th:unless="${userVo.current}==1">上一页</a>
+                                        <a onclick="page(this)" th:attr="data-page=${userVo.current}+1" class="item"
+                                           th:unless="${userVo.current}==${userVo.pages}">下一页</a>
+                                    </div>
+                                    <a href="#" th:href="@{/admin/blogs/input}"
+                                       class="ui mini right floated teal basic button">新增</a>
+                                </th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--底部-->
+<footer th:replace="_fragments :: footer" class="ui inverted vertical segment">
+    <div class="ui center aligned container">
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright @ 2020 Designed by Albert</p>
+    </div>
+</footer>
+
+<!--/*/<th:block th:replace="_fragments :: script">/*/-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.userdiv').click(
+        function () {
+            $('.useritem').toggle();
+        }
+    );
+
+    $('.ui.checkdiv').click(
+        function () {
+            $('.checkitem').toggle();
+        }
+    );
+    $('.ui.recommenddiv').click(
+        function () {
+            $('.recommenditem').toggle();
+        }
+    );
+
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+
+    function page(obj) {
+        $("[name='page']").val($(obj).data("page"));
+        loaddata();
+    }
+
+    function loaddata() {
+        $("#table-container").load(/*[[@{/admin/user/search}]]*/"/admin/user/search", {
+            current: $("[name='page']").val()
+        });
+    }
+
+</script>
+
+</body>
+</html>
