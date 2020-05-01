@@ -50,10 +50,10 @@
                             首页
                         </div>
                         <div>
-                            <div class="ui active teal item userdiv">
+                            <div class="ui active teal item menudiv">
                                 用户管理 <i class="dropdown icon right"></i>
                             </div>
-                            <div class="item useritem menu">
+                            <div class="item menuitem menu">
                                 <a class="active item">普通用户信息</a>
                                 <a class="item">志愿者信息</a>
                             </div>
@@ -78,16 +78,6 @@
                                 <a class="item">志愿者信息</a>
                             </div>
                         </div>
-
-                        <!-- <div>
-                             <div class="ui item userdiv">
-                                 审核管理 <i class="dropdown icon right"></i>
-                             </div>
-                             <div class="item useritem menu">
-                                 <a class="active item">动态审核</a>
-                                 <a class="item">志愿者信息</a>
-                             </div>
-                         </div>-->
                     </div>
                 </div>
             </div>
@@ -95,37 +85,21 @@
             <!--右边表格栏-->
             <div class="eleven wide column" style="margin-top:50px!important;">
                 <div class="ui container">
-                    <form action="#" method="post" class="ui segment form">
+                    <div class="ui segment form">
                         <!--隐含域，用于传参-->
                         <input type="hidden" name="page">
                         <div class="inline fields">
                             <div class="field">
-                                <input type="text" name="title" placeholder="标题">
+                                <input type="hidden" name ="ctgy" value="videos">
+                                <input type="text" style="width: 200px !important;" name="keyWord" placeholder="search...">
                             </div>
                             <div class="field">
-                                <div class="ui selection dropdown">
-                                    <input type="hidden" name="type">
-                                    <i class="dropdown icon"></i>
-                                    <div class="default text">分类</div>
-                                    <div class="menu">
-                                        <div class="item" data-value="1">错误日志</div>
-                                        <div class="item" data-value="1">开发者手册</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui checkbox">
-                                    <input type="checkbox" id="recommend" name="recommend">
-                                    <label for="recommend">推荐</label>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <button class="ui mini teal basic button">
+                                <button id="search-btn" class="ui mini teal basic button">
                                     <i class="search icon"></i>搜索
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </div>
                     <div id="table-container">
                         <table th:fragment="videosList" class="ui celled table martch">
                             <thead>
@@ -158,7 +132,9 @@
                                 <!--  <td>2020-01-15 22:25</td>-->
                                 <td>
                                     <a href="#" class="ui mini teal basic button">编辑</a>
-                                    <a href="#" class="ui mini red basic button">删除</a>
+                                    <a href="#"
+                                       th:href="@{/admin/recmd/delete(current=${videosVo.current},recmId=${videos.rcmvdId},ctgy='videos')}"
+                                       class="ui mini red basic button">删除</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -185,11 +161,117 @@
         </div>
     </div>
 </div>
-<div class="ui small m-padded-tb-tiny active modal">
-    <div class="ui container center aligned">
-        <h2>新增用户test</h2>
-        <input type="text">
-    </div>
+
+<!--模态窗口-->
+<div class="ui small m-padded active modal">
+    <form id="videoform" class="ui m-margin-large form segment teal" th:action="@{/admin/recmd/addVideos}"
+          method="post" enctype="multipart/form-data">
+        <h3 class="ui dividing teal header">添加影视推荐</h3>
+        <div class="two fields">
+            <div class="field m-margin-large">
+                <label>推荐首图</label>
+                <div class="ui container teal segment">
+                    <input type="file" name="upPic" id="test-image-file"
+                           accept="image/gif, image/jpeg, image/png, image/jpg">
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui field required m-margin">
+                    <label>影视名称</label>
+                    <div class="field">
+                        <input type="text" name="rcmvdTitle" placeholder="影视名称">
+                    </div>
+                </div>
+                <div class="ui required field m-margin">
+                    <label>推荐标签</label>
+                    <div class="ui left labeled action input">
+                        <div class="ui tag fluid selection dropdown multiple search">
+                            <input type="hidden" name="categoryTag">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">标签</div>
+                            <div class="menu">
+                                <div class="item" data-value="1"
+                                >亲情
+                                </div>
+                                <div class="item" data-value="1"
+                                >治愈
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="ui two fields required m-margin">
+            <div class="five wide field">
+                <label>导演</label>
+                <div class="field">
+                    <input type="text" name="director" placeholder="导演">
+                </div>
+            </div>
+            <div class="eleven wide ui required field">
+                <label>主演</label>
+                <div class="ui left labeled action input">
+                    <div class="ui tag fluid selection dropdown multiple search">
+                        <input type="hidden" name="mainPerforme">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">标签</div>
+                        <div class="menu">
+                            <div class="item" data-value="albert"
+                            >albert
+                            </div>
+                            <div class="item" data-value="dick"
+                            >dick
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui two fields required m-margin">
+            <div class="field">
+                <label>点映地址</label>
+                <div class="field">
+                    <input type="text" name="watchAddress" placeholder="出版社名称">
+                </div>
+            </div>
+            <div class="required field">
+                <label>上映日期</label>
+                <div class="field">
+                    <input type="date" name="releaseTime" placeholder="2020-04-16">
+                </div>
+            </div>
+        </div>
+
+        <div class="required field m-margin-large">
+            <label>内容简介</label>
+            <textarea name="rcmvdIntro"></textarea>
+        </div>
+
+        <div class="required field m-margin-large">
+            <label>推荐理由</label>
+            <textarea name="rcmReason"></textarea>
+        </div>
+
+        <div class="required field">
+            <div class="field">
+                <input type="hidden" name="userId" th:value="${session.user.userId}">
+            </div>
+        </div>
+        <div class="required field">
+            <div class="ui error message">
+                <div class="header">We noticed some issues</div>
+            </div>
+        </div>
+
+        <div class="ui container right aligned">
+            <div class="ui button grey m-margin-lr-form segment cancel">取消添加</div>
+            <div id="publish-btn" class="ui submit button teal segment">确认添加</div>
+        </div>
+
+    </form>
 </div>
 
 
@@ -210,9 +292,9 @@
         $('.m-item').toggleClass('m-mobile-hide');
     });
 
-    $('.ui.userdiv').click(
+    $('.ui.menudiv').click(
         function () {
-            $('.useritem').toggle();
+            $('.menuitem').toggle();
         }
     );
 
@@ -227,8 +309,18 @@
         }
     );
 
+    $('.ui.qsbankdiv').click(
+        function () {
+            $('.qsbankitem').toggle();
+        }
+    );
+
     $('.ui.dropdown').dropdown({
         on: 'hover'
+    });
+
+    $('.ui.tag.dropdown').dropdown({
+        allowAdditions: true
     });
 
     $('.ui.add').click(
@@ -236,7 +328,12 @@
             $('.ui.modal').modal('show')
         }
     );
-    $('.ui.modal').modal('hide')
+    $('.ui.modal').modal('hide');
+
+    $('.ui.button.cancel').click(
+        function () {
+            $('.ui.modal').modal('hide');
+        });
 
     function page(obj) {
         $("[name='page']").val($(obj).data("page"));
@@ -246,6 +343,76 @@
     function loaddata() {
         $("#table-container").load(/*[[@{/admin/pageChange}]]*/"/admin/pageChange", {
             current: $("[name='page']").val()
+        });
+    }
+
+    $('#publish-btn').click(function () {
+        $('#videoform').submit;
+    });
+
+    $('#videoform').form({
+        fields: {
+            rcmvdTitle: {
+                identifier: 'rcmvdTitle',
+                rules: [{
+                    type: 'empty',
+                    prompt: '输入错误：电影名称不能为空'
+                }]
+            },
+            categoryTag: {
+                identifier: 'categoryTag',
+                rules: [{
+                    type: 'empty',
+                    prompt: '输入错误：分类标签不能为空'
+                }]
+            },
+            director: {
+                identifier: 'director',
+                rules: [{
+                    type: 'empty',
+                    prompt: '输入错误：导演名字不能为空'
+                }]
+            },
+            mainPerforme: {
+                identifier: 'mainPerforme',
+                rules: [{
+                    type: 'empty',
+                    prompt: '输入错误：主演人员不能为空'
+                }]
+            },
+            watchAddress: {
+                identifier: 'watchAddress',
+                rules: [{
+                    type: 'empty',
+                    prompt: '输入错误：点映地址不能为空'
+                }]
+            },
+            rcmvdIntro: {
+                identifier: 'rcmvdIntro',
+                rules: [{
+                    type: 'empty',
+                    prompt: '输入错误：内容简介不能为空'
+                }]
+            },
+            rcmReason: {
+                identifier: 'rcmReason',
+                rules: [{
+                    type: 'empty',
+                    prompt: '输入错误：推荐理由不能为空'
+                }]
+            }
+        }
+    });
+
+    $("#search-btn").click(function () {
+        $("[name='page']").val(0);
+        searchdata();
+    });
+
+    function searchdata() {
+        $("#table-container").load(/*[[@{/admin/search}]]*/"/admin/search", {
+            ctgy : $("[name='ctgy']").val(),
+            keyWord : $("[name='keyWord']").val()
         });
     }
 

@@ -12,8 +12,12 @@ import java.util.List;
  */
 public interface DyMapper extends BaseMapper<Dynamic> {
 
-    @Select("Select * from t_Dynamic where user_id in"+
-            "( select target_id from t_Follow where user_id = #{userid}) order by dy_create_time desc")
+    @Select("Select * from t_Dynamic " +
+            "where user_id in"+
+            "( select target_id " +
+            "from t_Follow " +
+            "where user_id = #{userid}) " +
+            "order by dy_create_time desc")
     List<Dynamic> selectMyfollowDy(String userid);
 
 }

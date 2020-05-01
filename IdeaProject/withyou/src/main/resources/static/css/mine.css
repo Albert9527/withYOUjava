@@ -3,23 +3,25 @@ body {
     background: url("../images/bg.jpg");
 }
 
-.height-martch{
+.m-padded-tb-mini {
+    padding-top: 0.2em !important;
+    padding-bottom: 0.2em !important;
+}
+
+/*----martch---*/
+.martch{
     height: 100% !important;
+    width: 100% !important;
 }
 
 .width-martch{
     width: 100% !important;
 }
 
-.martch{
+.height-martch{
     height: 100% !important;
-    width: 100% !important;
 }
 
-.m-padded-tb-mini {
-    padding-top: 0.2em !important;
-    padding-bottom: 0.2em !important;
-}
 
 /*-----Text------*/
 .m-text {
@@ -99,6 +101,14 @@ body {
 }
 
 /*-----margin----*/
+.m-margin{
+   margin: 1em !important;
+}
+
+.m-margin-large{
+    margin: 1.4em !important;
+}
+
 .m-margin-tb-tiny {
     margin-top: 0.3em !important;
     margin-bottom: 0.3em !important;
@@ -123,6 +133,11 @@ body {
 
 .m-margin-bottom-small {
     margin-bottom: 0.5em !important;
+}
+
+.m-margin-lr-form{
+    margin-left: 1em !important;
+    margin-right: 1em !important;
 }
 
 /*---position---*/

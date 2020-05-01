@@ -1,8 +1,10 @@
 package com.zd1024.withyou.entity.Recommend;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 
@@ -30,4 +32,5 @@ public class CurePlan {
 
     //创始人
     private String founder;
+
 }

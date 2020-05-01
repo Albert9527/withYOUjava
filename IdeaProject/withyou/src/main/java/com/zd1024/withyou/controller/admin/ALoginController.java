@@ -30,11 +30,12 @@ public class ALoginController {
                         HttpSession session,
                         RedirectAttributes attributes){
 
-        System.out.println("》》》》》》》》》"+username+password);
+       // System.out.println("》》》》》》》》》"+username+password);
         Acount acount = userService.checkAcount(username,password);
         if (acount!=null){
-            acount.setPassword(null);
-            session.setAttribute("user",acount);
+            User user = userService.getUserinfo(acount.getUserId());
+            if (user!=null)
+            session.setAttribute("user",user);
             return "index";
         }else {
             attributes.addFlashAttribute("message","用户名或密码错误");

@@ -50,10 +50,10 @@
                        首页
                     </div>
                     <div>
-                        <div class="ui active teal item userdiv">
+                        <div class="ui active teal item menudiv">
                             用户管理 <i class="dropdown icon right"></i>
                         </div>
-                        <div class="item useritem menu">
+                        <div class="item menuitem menu">
                             <a class="active item">普通用户信息</a>
                             <a class="item">志愿者信息</a>
                         </div>
@@ -95,39 +95,23 @@
             <!--右边表格栏-->
             <div class="eleven wide column" style="margin-top:50px!important;">
                 <div class="ui container">
-                    <form action="#" method="post" class="ui segment form">
+                    <div class="ui segment form">
                         <!--隐含域，用于传参-->
                         <input type="hidden" name="page">
                         <div class="inline fields">
                             <div class="field">
-                                <input type="text" name="title" placeholder="标题">
+                                <input type="hidden" name ="ctgy" value="volunteer">
+                                <input type="text" style="width: 200px !important;" name="keyWord" placeholder="search...">
                             </div>
                             <div class="field">
-                                <div class="ui selection dropdown">
-                                    <input type="hidden" name="type">
-                                    <i class="dropdown icon"></i>
-                                    <div class="default text">分类</div>
-                                    <div class="menu">
-                                        <div class="item" data-value="1">错误日志</div>
-                                        <div class="item" data-value="1">开发者手册</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui checkbox">
-                                    <input type="checkbox" id="recommend" name="recommend">
-                                    <label for="recommend">推荐</label>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <button class="ui mini teal basic button">
+                                <button id="search-btn" class="ui mini teal basic button">
                                     <i class="search icon"></i>搜索
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </div>
                     <div id="table-container">
-                        <table th:fragment="userList" class="ui celled table martch">
+                        <table th:fragment="volunteerList" class="ui celled table martch">
                             <thead>
                             <th>序号</th>
                             <th>用户昵称</th>
@@ -190,9 +174,9 @@
         $('.m-item').toggleClass('m-mobile-hide');
     });
 
-    $('.ui.userdiv').click(
+    $('.ui.menudiv').click(
         function () {
-            $('.useritem').toggle();
+            $('.menuitem').toggle();
         }
     );
 
@@ -207,18 +191,31 @@
         }
     );
 
+    $('.ui.qsbankdiv').click(
+        function () {
+            $('.qsbankitem').toggle();
+        }
+    );
+
     $('.ui.dropdown').dropdown({
         on: 'hover'
     });
 
     function page(obj) {
         $("[name='page']").val($(obj).data("page"));
-        loaddata();
+        searchdata();
     }
 
-    function loaddata() {
-        $("#table-container").load(/*[[@{/admin/user/search}]]*/"/admin/user/search", {
-            current: $("[name='page']").val()
+    $("#search-btn").click(function () {
+        $("[name='page']").val(0);
+        searchdata();
+    });
+
+    function searchdata() {
+        $("#table-container").load(/*[[@{/admin/search}]]*/"/admin/search", {
+            current: $("[name='page']").val(),
+            ctgy : $("[name='ctgy']").val(),
+            keyWord : $("[name='keyWord']").val()
         });
     }
 

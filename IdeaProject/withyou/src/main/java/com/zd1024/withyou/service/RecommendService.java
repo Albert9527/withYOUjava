@@ -11,4 +11,6 @@ public interface RecommendService {
     ObjVo getAllRecommendByCtgy(Integer current, Integer size,String ctgy);
 
     int addNewRecommend(Object recommend, String ctgy);
+
+    int deleteRecommendById(String recmId, String ctgy);
 }

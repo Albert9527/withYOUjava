@@ -19,4 +19,8 @@ public interface UserService {
     int UpdateUserInfo(String userId, String clumName, String info);
 
     int updateAvatar(String userId, String picname);
+
+    ObjVo<User> searchUser(Integer current,Integer size,String keyWord);
+
+    ObjVo<User> searchvolunteer(Integer current,Integer size,String keyWord);
 }

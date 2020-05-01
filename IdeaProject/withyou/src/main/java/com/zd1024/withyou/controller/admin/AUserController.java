@@ -27,7 +27,7 @@ public class AUserController {
 
     @PostMapping("/pageChange")
     public String search(Integer current, Model model){
-        ObjVo<User> userVo = userService.getUser(current,3);
+        ObjVo<User> userVo = userService.getUser(current,2);
         model.addAttribute("userVo",userVo);
         return "userinfo::userList";
     }

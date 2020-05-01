@@ -50,10 +50,10 @@
                             首页
                         </div>
                         <div>
-                            <div class="ui active teal item userdiv">
+                            <div class="ui active teal item menudiv">
                                 用户管理 <i class="dropdown icon right"></i>
                             </div>
-                            <div class="item useritem menu">
+                            <div class="item menuitem menu">
                                 <a class="active item">普通用户信息</a>
                                 <a class="item">志愿者信息</a>
                             </div>
@@ -114,9 +114,9 @@
         $('.m-item').toggleClass('m-mobile-hide');
     });
 
-    $('.ui.userdiv').click(
+    $('.ui.menudiv').click(
         function () {
-            $('.useritem').toggle();
+            $('.menuitem').toggle();
         }
     );
 
@@ -128,6 +128,12 @@
     $('.ui.recommenddiv').click(
         function () {
             $('.recommenditem').toggle();
+        }
+    );
+
+    $('.ui.qsbankdiv').click(
+        function () {
+            $('.qsbankitem').toggle();
         }
     );
 

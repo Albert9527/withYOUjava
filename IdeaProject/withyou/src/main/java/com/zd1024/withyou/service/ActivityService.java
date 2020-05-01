@@ -2,6 +2,7 @@ package com.zd1024.withyou.service;
 
 import com.zd1024.withyou.entity.ActApply;
 import com.zd1024.withyou.entity.Activity;
+import com.zd1024.withyou.entityVo.MenberVo;
 import com.zd1024.withyou.entityVo.ObjVo;
 import org.springframework.stereotype.Service;
 
@@ -32,4 +33,8 @@ public interface ActivityService {
     List<ActApply> getApplyByMenber(Integer current,Integer size,String userid);
 
     int checkActApply(ActApply actApply);
+
+    List<MenberVo> getMenberByActId(String actId);
+
+    ObjVo<Activity> searchActivity(Integer current,Integer size,String keyWord);
 }

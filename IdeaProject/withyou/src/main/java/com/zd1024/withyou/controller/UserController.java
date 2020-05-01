@@ -124,12 +124,12 @@ public class UserController {
     /**
      * 获取我的粉丝
      *
-     * @param userid
+     * @param userId
      * @return
      */
     @GetMapping("/FollowMe")
-    public AndroidData<Friend> getFollowMe(String userid) {
-        List<Friend> friends = friendService.getFollowMe(userid);
+    public AndroidData<Friend> getFollowMe(String userId) {
+        List<Friend> friends = friendService.getFollowMe(userId);
 
         data = DataDealUtil.dealdata(friends);
         return data;

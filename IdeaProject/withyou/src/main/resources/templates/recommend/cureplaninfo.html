@@ -45,15 +45,15 @@
         <div class="ui stackable grid height-martch">
             <div class="four wide column height-martch">
                 <div class="ui inverted vertical left menu height-martch">
-                    <div th:replace="_fragments :: menu(1,1)" class="container">
+                    <div th:replace="_fragments :: menu(3,4)" class="container">
                         <div class="header item">
                             首页
                         </div>
                         <div>
-                            <div class="ui active teal item userdiv">
+                            <div class="ui active teal item menudiv">
                                 用户管理 <i class="dropdown icon right"></i>
                             </div>
-                            <div class="item useritem menu">
+                            <div class="item menuitem menu">
                                 <a class="active item">普通用户信息</a>
                                 <a class="item">志愿者信息</a>
                             </div>
@@ -78,16 +78,6 @@
                                 <a class="item">志愿者信息</a>
                             </div>
                         </div>
-
-                        <!-- <div>
-                             <div class="ui item userdiv">
-                                 审核管理 <i class="dropdown icon right"></i>
-                             </div>
-                             <div class="item useritem menu">
-                                 <a class="active item">动态审核</a>
-                                 <a class="item">志愿者信息</a>
-                             </div>
-                         </div>-->
                     </div>
                 </div>
             </div>
@@ -95,71 +85,61 @@
             <!--右边表格栏-->
             <div class="eleven wide column" style="margin-top:50px!important;">
                 <div class="ui container">
-                    <form action="#" method="post" class="ui segment form">
+                    <div class="ui segment form">
                         <!--隐含域，用于传参-->
                         <input type="hidden" name="page">
                         <div class="inline fields">
                             <div class="field">
-                                <input type="text" name="title" placeholder="标题">
+                                <input type="hidden" name ="ctgy" value="cureplan">
+                                <input type="text" style="width: 200px !important;" name="keyWord" placeholder="search...">
                             </div>
                             <div class="field">
-                                <div class="ui selection dropdown">
-                                    <input type="hidden" name="type">
-                                    <i class="dropdown icon"></i>
-                                    <div class="default text">分类</div>
-                                    <div class="menu">
-                                        <div class="item" data-value="1">错误日志</div>
-                                        <div class="item" data-value="1">开发者手册</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui checkbox">
-                                    <input type="checkbox" id="recommend" name="recommend">
-                                    <label for="recommend">推荐</label>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <button class="ui mini teal basic button">
+                                <button id="search-btn" class="ui mini teal basic button">
                                     <i class="search icon"></i>搜索
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </div>
                     <div id="table-container">
-                        <table th:fragment="userList" class="ui celled table martch">
+                        <table th:fragment="cureplanList" class="ui celled table martch">
                             <thead>
                             <th>序号</th>
-                            <th>用户昵称</th>
-                            <th>用户简介</th>
-                            <th>头像</th>
-                            <th>创建时间</th>
-                            <th>当前地址</th>
+                            <th>自疗方案名称</th>
+                            <th>创始人</th>
+                            <th>发行日期</th>
+                            <th>内容简介</th>
+                            <th>分类标签</th>
+                            <th>推荐理由</th>
+                            <th>点赞数</th>
                             <th>操作</th>
                             </thead>
                             <tbody>
-                            <tr th:each="user:${userVo.datalist}">
+                            <tr th:each="cureplan:${cureplanVo.datalist}">
                                 <td>1</td>
-                                <td th:text="${user.nickname}">1</td>
-                                <td th:text="${user.intro}">普通用户</td>
-                                <td th:text="${user.avatar}" class="a">头像地址</td>
-                                <td th:text="${user.location}">翻斗街翻斗花园</td>
-                                <td th:text="${user.createTime}">2020-04-12</td>
+                                <td th:text="${cureplan.rcmcpName}">电击治疗</td>
+                                <td th:text="${cureplan.founder}">albert</td>
+                                <td th:text="${cureplan.createTime}">2020-04-12</td>
+                                <td th:text="${cureplan.rcmcpIntro}">使用高压电点击人体</td>
+                                <td th:text="${cureplan.categoryTag}">test</td>
+                                <td th:text="${cureplan.rcmcpReason}">效果非常好</td>
+                                <td th:text="${cureplan.praiseCount}">202</td>
                                 <!--  <td>2020-01-15 22:25</td>-->
                                 <td>
                                     <a href="#" class="ui mini teal basic button">编辑</a>
-                                    <a href="#" class="ui mini red basic button">删除</a>
+                                    <a href="#"
+                                       th:href="@{/admin/recmd/delete(current=${cureplanVo.current},recmId=${cureplan.rcmcpId},ctgy='cureplan')}"
+                                       class="ui mini red basic button">删除</a>
                                 </td>
                             </tr>
                             </tbody>
                             <tfoot>
                             <tr>
-                                <th colspan="7">
-                                    <div class="ui mini floated pagination menu" th:if="${userVo.pages}>1">
-                                        <a onclick="page(this)" th:attr="data-page=${userVo.current}-1" class="item"
-                                           th:unless="${userVo.current}==1">上一页</a>
-                                        <a onclick="page(this)" th:attr="data-page=${userVo.current}+1" class="item"
-                                           th:unless="${userVo.current}==${userVo.pages}">下一页</a>
+                                <th colspan="10">
+                                    <div class="ui mini floated pagination menu" th:if="${cureplanVo.pages}>1">
+                                        <a onclick="page(this)" th:attr="data-page=${cureplanVo.current}-1" class="item"
+                                           th:unless="${cureplanVo.current}==1">上一页</a>
+                                        <a onclick="page(this)" th:attr="data-page=${cureplanVo.current}+1" class="item"
+                                           th:unless="${cureplanVo.current}==${cureplanVo.pages}">下一页</a>
                                     </div>
                                     <a href="#"
                                        class="ui mini right floated teal basic button add">新增</a>
@@ -175,11 +155,81 @@
         </div>
     </div>
 </div>
-<div class="ui small m-padded-tb-tiny active modal">
-    <div class="ui container center aligned">
-        <h2>新增用户test</h2>
-        <input type="text">
-    </div>
+
+<!--模态窗口-->
+<div class="ui small m-padded active modal">
+    <form id="cureplanform" class="ui m-margin-large form segment teal" th:action="@{/admin/recmd/addCureplan}"
+          method="post" enctype="multipart/form-data">
+        <h3 class="ui dividing teal header">添加治疗方案推荐</h3>
+        <div class="two fields">
+            <div class="ui field required m-margin">
+                <label>治疗方案名称</label>
+                <div class="field">
+                    <input type="text" name="rcmcpName" placeholder="方案名称">
+                </div>
+            </div>
+            <div class="ui required field m-margin">
+                <label>推荐标签</label>
+                <div class="ui left labeled action input">
+                    <div class="ui tag fluid selection dropdown multiple search">
+                        <input type="hidden" name="categoryTag">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">标签</div>
+                        <div class="menu">
+                            <div class="item" data-value="规律生活"
+                            >规律生活
+                            </div>
+                            <div class="item" data-value="自疗"
+                            >自疗
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui two fields m-margin">
+            <div class="field required">
+                <label>创始人</label>
+                <div class="field">
+                    <input type="text" name="founder" placeholder="方案创始人">
+                </div>
+            </div>
+            <div class="field">
+                <label>发布日期</label>
+                <div class="field">
+                    <input type="date" name="createTime" placeholder="2020-04-16">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="required field m-margin-large">
+            <label>方案简介</label>
+            <textarea name="rcmcpIntro"></textarea>
+        </div>
+
+        <div class="required field m-margin-large">
+            <label>推荐理由</label>
+            <textarea name="rcmcpReason"></textarea>
+        </div>
+
+        <div class="required field">
+            <div class="field">
+                <input type="hidden" name="userId" th:value="${session.user.userId}">
+            </div>
+        </div>
+        <div class="required field">
+            <div class="ui error message">
+                <div class="header">We noticed some issues</div>
+            </div>
+        </div>
+
+        <div class="ui container right aligned">
+            <div class="ui button grey m-margin-lr-form segment cancel">取消添加</div>
+            <div id="publish-btn" class="ui submit button teal segment">确认添加</div>
+        </div>
+
+    </form>
 </div>
 
 
@@ -200,9 +250,9 @@
         $('.m-item').toggleClass('m-mobile-hide');
     });
 
-    $('.ui.userdiv').click(
+    $('.ui.menudiv').click(
         function () {
-            $('.useritem').toggle();
+            $('.menuitem').toggle();
         }
     );
 
@@ -216,9 +266,18 @@
             $('.recommenditem').toggle();
         }
     );
+    $('.ui.qsbankdiv').click(
+        function () {
+            $('.qsbankitem').toggle();
+        }
+    );
 
     $('.ui.dropdown').dropdown({
         on: 'hover'
+    });
+
+    $('.ui.tag.dropdown').dropdown({
+        allowAdditions: true
     });
 
     $('.ui.add').click(
@@ -228,6 +287,10 @@
     );
     $('.ui.modal').modal('hide')
 
+    $('.ui.button.cancel').click(function () {
+        $('.ui.modal').modal('hide');
+    });
+
     function page(obj) {
         $("[name='page']").val($(obj).data("page"));
         loaddata();
@@ -236,6 +299,63 @@
     function loaddata() {
         $("#table-container").load(/*[[@{/admin/pageChange}]]*/"/admin/pageChange", {
             current: $("[name='page']").val()
+        });
+    }
+
+    $('#publish-btn').click(function () {
+        $('#cureplanform').submit;
+    });
+
+    $('#cureplanform').form({
+        fields: {
+            rcmcpName: {
+                identifier: 'rcmcpName',
+                rules: [{
+                    type: 'empty',
+                    prompt: '输入错误：方案名称不能为空'
+                }]
+            },
+
+            categoryTag: {
+                identifier: 'categoryTag',
+                rules: [{
+                    type: 'empty',
+                    prompt: '输入错误：分类标签不能为空'
+                }]
+            },
+
+            founder: {
+                identifier: 'founder',
+                rules: [{
+                    type: 'empty',
+                    prompt: '输入错误：创始人不能为空'
+                }]
+            },
+            rcmcpIntro: {
+                identifier: 'rcmcpIntro',
+                rules: [{
+                    type: 'empty',
+                    prompt: '输入错误：方案描述不能为空'
+                }]
+            },
+            rcmcpReason: {
+                identifier: 'rcmcpReason',
+                rules: [{
+                    type: 'empty',
+                    prompt: '输入错误：推荐理由不能为空'
+                }]
+            }
+        }
+    });
+    $("#search-btn").click(function () {
+        $("[name='page']").val(0);
+        searchdata();
+    });
+
+    function searchdata() {
+        $("#table-container").load(/*[[@{/admin/search}]]*/"/admin/search", {
+            ctgy : $("[name='ctgy']").val(),
+            keyWord : $("[name='keyWord']").val()
         });
     }
 

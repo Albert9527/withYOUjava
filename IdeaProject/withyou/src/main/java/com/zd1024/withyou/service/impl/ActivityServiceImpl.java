@@ -3,6 +3,7 @@ package com.zd1024.withyou.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zd1024.withyou.Util.DataDealUtil;
 import com.zd1024.withyou.Util.DateUtil;
 import com.zd1024.withyou.Util.MySHA512;
 import com.zd1024.withyou.dao.ActApplyMapper;
@@ -11,6 +12,7 @@ import com.zd1024.withyou.dao.MenberMapper;
 import com.zd1024.withyou.entity.ActApply;
 import com.zd1024.withyou.entity.Activity;
 import com.zd1024.withyou.entity.Menber;
+import com.zd1024.withyou.entityVo.MenberVo;
 import com.zd1024.withyou.entityVo.ObjVo;
 import com.zd1024.withyou.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,5 +196,27 @@ public class ActivityServiceImpl implements ActivityService {
             } else
                 return -1;
         }
+    }
+
+    @Override
+    public List<MenberVo> getMenberByActId(String actId) {
+        return menberMapper.queryMenberInfoByActId(actId);
+    }
+
+    @Override
+    public ObjVo<Activity> searchActivity(Integer current,Integer size,String keyWord) {
+        IPage<Activity> page = new Page<>(current,size);
+
+        QueryWrapper<Activity> queryWrapper = new QueryWrapper();
+        queryWrapper.like("act_title",keyWord)
+                .or()
+                .like("act_address",keyWord)
+                .or()
+                .like("act_intro",keyWord)
+                .or()
+                .like("act_tag",keyWord);
+        activityMapper.selectPage(page,queryWrapper);
+
+        return DataDealUtil.PageDataDeal(page);
     }
 }

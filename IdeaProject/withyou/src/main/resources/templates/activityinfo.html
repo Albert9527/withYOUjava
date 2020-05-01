@@ -45,50 +45,40 @@
         <div class="ui stackable grid height-martch">
             <div class="four wide column height-martch">
                 <div class="ui inverted vertical left menu height-martch">
-                    <div th:replace="_fragments :: menu(2,3)"  class="container">
-                    <div class="header item">
-                       首页
-                    </div>
-                    <div>
-                        <div class="ui active teal item userdiv">
-                            用户管理 <i class="dropdown icon right"></i>
+                    <div th:replace="_fragments :: menu(2,3)" class="container">
+                        <div class="header item">
+                            首页
                         </div>
-                        <div class="item useritem menu">
-                            <a class="active item">普通用户信息</a>
-                            <a class="item">志愿者信息</a>
+                        <div>
+                            <div class="ui active teal item menudiv">
+                                用户管理 <i class="dropdown icon right"></i>
+                            </div>
+                            <div class="item menuitem menu">
+                                <a class="active item">普通用户信息</a>
+                                <a class="item">志愿者信息</a>
+                            </div>
                         </div>
-                    </div>
 
-                    <div>
-                        <div class="ui active item checkdiv">
-                            审核管理 <i class="dropdown icon right"></i>
+                        <div>
+                            <div class="ui active item checkdiv">
+                                审核管理 <i class="dropdown icon right"></i>
+                            </div>
+                            <div class="item checkitem menu">
+                                <a class="item">动态审核</a>
+                                <a class="item">志愿者信息</a>
+                            </div>
                         </div>
-                        <div class="item checkitem menu">
-                            <a class="item">动态审核</a>
-                            <a class="item">志愿者信息</a>
+
+                        <div>
+                            <div class="ui item recommenddiv">
+                                资源推荐管理 <i class="dropdown icon right"></i>
+                            </div>
+                            <div class="item recommenditem menu">
+                                <a class="item">动态审核</a>
+                                <a class="item">志愿者信息</a>
+                            </div>
                         </div>
                     </div>
-
-                    <div>
-                        <div class="ui item recommenddiv">
-                            资源推荐管理 <i class="dropdown icon right"></i>
-                        </div>
-                        <div class="item recommenditem menu">
-                            <a class="item">动态审核</a>
-                            <a class="item">志愿者信息</a>
-                        </div>
-                    </div>
-
-                    <!-- <div>
-                         <div class="ui item userdiv">
-                             审核管理 <i class="dropdown icon right"></i>
-                         </div>
-                         <div class="item useritem menu">
-                             <a class="active item">动态审核</a>
-                             <a class="item">志愿者信息</a>
-                         </div>
-                     </div>-->
-                </div>
                 </div>
             </div>
 
@@ -97,130 +87,148 @@
                 <div class="ui attached pointing menu">
                     <div class="ui container">
                         <div class="left menu">
-                            <a href="#" th:href="@{/admin/activity/(current=1,state=0)}" class="active teal item">未审核</a>
+                            <a href="#" th:href="@{/admin/activity/(current=1,state=0)}"
+                               class="active teal item">未审核</a>
                             <a href="#" th:href="@{/admin/activity/(current=1,state=1)}" class="item">已通过</a>
                             <a href="#" th:href="@{/admin/activity/(current=1,state=-1)}" class="item">已拒绝</a>
                         </div>
                     </div>
                 </div>
                 <div class="ui container">
-                    <form action="#" method="post" class="ui segment form">
+                    <div class="ui segment form">
                         <!--隐含域，用于传参-->
                         <input type="hidden" name="page">
                         <div class="inline fields">
                             <div class="field">
-                                <input type="text" style="width: 200px !important;" name="title" placeholder="search...">
+                                <input type="hidden" name ="ctgy" value="activity">
+                                <input type="text" style="width: 200px !important;" name="keyWord" placeholder="search...">
                             </div>
                             <div class="field">
-                                <button class="ui mini teal basic button">
+                                <button id="search-btn" class="ui mini teal basic button">
                                     <i class="search icon"></i>搜索
                                 </button>
                             </div>
                         </div>
-                    </form>
-                    <div id="table-container">
-                        <table th:fragment="actList" class="ui celled table martch">
-                            <thead>
-                            <th>序号</th>
-                            <th>活动标题</th>
-                            <th>组织者</th>
-                            <th>举办地址</th>
-                            <th>举办时间</th>
-                            <th>举办时长</th>
-                            <th>活动描述</th>
-                            <th>规模</th>
-                            <th>标签</th>
-                            <th>审核操作</th>
-                            </thead>
-                            <tbody>
-                            <tr th:each="activity:${actVo.datalist}">
-                                <td>1</td>
-                                <td th:text="${activity.actTitle}">活动标题</td>
-                                <td th:text="${activity.userId}">2</td>
-                                <td th:text="${activity.actAddress}">翻斗街</td>
-                                <td th:text="${activity.actStartTime}">2020/04/22</td>
-                                <td th:text="${activity.actDuration}">2h</td>
-                                <td th:text="${activity.actIntro}">测试数据</td>
-                                <td th:text="${activity.actScale}">5</td>
-                                <td th:text="${activity.actTag}">test</td>
-                                <!--  <td>2020-01-15 22:25</td>-->
-                                <td>
-                                    <a href="#" th:href="@{/admin/activity/examine(current=${actVo.current},actId=${activity.actId},state=1)}" class="ui mini teal basic button">通过</a>
-                                    <a href="#" th:href="@{/admin/activity/examine(current=${actVo.current},actId=${activity.actId},state=-1)}"class="ui mini red basic button">驳回</a>
-                                </td>
-                            </tr>
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <th colspan="7">
-                                    <div class="ui mini floated pagination menu" th:if="${actVo.pages}>1">
-                                        <a onclick="page(this)" th:attr="data-page=${actVo.current}-1" class="item"
-                                           th:unless="${actVo.current}==1">上一页</a>
-                                        <a onclick="page(this)" th:attr="data-page=${actVo.current}+1" class="item"
-                                           th:unless="${actVo.current}==${actVo.pages}">下一页</a>
-                                    </div>
-                                </th>
-                            </tr>
-                            </tfoot>
-                        </table>
+                    </div>
+                        <div id="table-container">
+                            <table th:fragment="actList" class="ui celled table martch">
+                                <thead>
+                                <th>序号</th>
+                                <th>活动标题</th>
+                                <th>组织者</th>
+                                <th>举办地址</th>
+                                <th>举办时间</th>
+                                <th>举办时长</th>
+                                <th>活动描述</th>
+                                <th>规模</th>
+                                <th>标签</th>
+                                <th>审核操作</th>
+                                </thead>
+                                <tbody>
+                                <tr th:each="activity:${actVo.datalist}">
+                                    <td>1</td>
+                                    <td th:text="${activity.actTitle}">活动标题</td>
+                                    <td th:text="${activity.userId}">2</td>
+                                    <td th:text="${activity.actAddress}">翻斗街</td>
+                                    <td th:text="${activity.actStartTime}">2020/04/22</td>
+                                    <td th:text="${activity.actDuration}">2h</td>
+                                    <td th:text="${activity.actIntro}">测试数据</td>
+                                    <td th:text="${activity.actScale}">5</td>
+                                    <td th:text="${activity.actTag}">test</td>
+                                    <!--  <td>2020-01-15 22:25</td>-->
+                                    <td>
+                                        <a href="#"
+                                           th:href="@{/admin/activity/examine(current=${actVo.current},actId=${activity.actId},state=1)}"
+                                           class="ui mini teal basic button">通过</a>
+                                        <a href="#"
+                                           th:href="@{/admin/activity/examine(current=${actVo.current},actId=${activity.actId},state=-1)}"
+                                           class="ui mini red basic button">驳回</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th colspan="10">
+                                        <div class="ui mini floated pagination menu" th:if="${actVo.pages}>1">
+                                            <a onclick="page(this)" th:attr="data-page=${actVo.current}-1" class="item"
+                                               th:unless="${actVo.current}==1">上一页</a>
+                                            <a onclick="page(this)" th:attr="data-page=${actVo.current}+1" class="item"
+                                               th:unless="${actVo.current}==${actVo.pages}">下一页</a>
+                                        </div>
+                                    </th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!--底部-->
-<footer th:replace="_fragments :: footer" class="ui inverted vertical segment">
-    <div class="ui center aligned container">
-        <div class="ui inverted section divider"></div>
-        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright @ 2020 Designed by Albert</p>
-    </div>
-</footer>
+    <!--底部-->
+    <footer th:replace="_fragments :: footer" class="ui inverted vertical segment">
+        <div class="ui center aligned container">
+            <div class="ui inverted section divider"></div>
+            <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright @ 2020 Designed by Albert</p>
+        </div>
+    </footer>
 
-<!--/*/<th:block th:replace="_fragments :: script">/*/-->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
-<!--/*/</th:block>/*/-->
-<script>
-    $('.menu.toggle').click(function () {
-        $('.m-item').toggleClass('m-mobile-hide');
-    });
-
-    $('.ui.userdiv').click(
-        function () {
-            $('.useritem').toggle();
-        }
-    );
-
-    $('.ui.checkdiv').click(
-        function () {
-            $('.checkitem').toggle();
-        }
-    );
-    $('.ui.recommenddiv').click(
-        function () {
-            $('.recommenditem').toggle();
-        }
-    );
-
-    $('.ui.dropdown').dropdown({
-        on: 'hover'
-    });
-
-
-    function page(obj) {
-        $("[name='page']").val($(obj).data("page"));
-        loaddata();
-    }
-
-    function loaddata() {
-        $("#table-container").load(/*[[@{/admin/activity/pageChange}]]*/"/admin/activity/pageChange", {
-            current: $("[name='page']").val()
+    <!--/*/<th:block th:replace="_fragments :: script">/*/-->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+    <!--/*/</th:block>/*/-->
+    <script>
+        $('.menu.toggle').click(function () {
+            $('.m-item').toggleClass('m-mobile-hide');
         });
-    }
 
-</script>
+        $('.ui.menudiv').click(
+            function () {
+                $('.menuitem').toggle();
+            }
+        );
+
+        $('.ui.checkdiv').click(
+            function () {
+                $('.checkitem').toggle();
+            }
+        );
+        $('.ui.recommenddiv').click(
+            function () {
+                $('.recommenditem').toggle();
+            }
+        );
+        $('.ui.qsbankdiv').click(
+            function () {
+                $('.qsbankitem').toggle();
+            }
+        );
+
+        $('.ui.dropdown').dropdown({
+            on: 'hover'
+        });
+
+
+        function page(obj) {
+            $("[name='page']").val($(obj).data("page"));
+            searchdata();
+        }
+
+        $("#search-btn").click(function () {
+            $("[name='page']").val(0);
+            searchdata();
+        });
+
+        function searchdata() {
+            $("#table-container").load(/*[[@{/admin/search}]]*/"/admin/search", {
+                current: $("[name='page']").val(),
+                ctgy: $("[name='ctgy']").val(),
+                keyWord: $("[name='keyWord']").val()
+            });
+        }
+
+    </script>
 
 </body>
 </html>

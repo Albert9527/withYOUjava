@@ -1,9 +1,12 @@
 package com.zd1024.withyou.entity.Recommend;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.beans.Transient;
 import java.sql.Date;
 
 @Data
@@ -42,4 +45,8 @@ public class Book {
 
     //出版日期
     private Date pubDate;
+
+    //首图文件
+    @TableField(exist = false)
+    private MultipartFile upPic;
 }

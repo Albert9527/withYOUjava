@@ -117,4 +117,10 @@ public class ActivityControlle {
         int rs = activityService.checkActApply(actApply);
         return data = DataDealUtil.dealdata(rs, "申请审核");
     }
+
+    @GetMapping("/getMenber")
+    public AndroidData getMenberByActId(String actId){
+        List dataList = activityService.getMenberByActId(actId);
+        return DataDealUtil.dealdata(dataList);
+    }
 }

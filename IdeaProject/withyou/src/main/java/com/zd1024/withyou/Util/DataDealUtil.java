@@ -1,7 +1,10 @@
 package com.zd1024.withyou.Util;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zd1024.withyou.entity.Dynamic;
 import com.zd1024.withyou.entityVo.AndroidData;
+import com.zd1024.withyou.entityVo.ObjVo;
+
 
 import java.util.List;
 
@@ -44,6 +47,18 @@ public class DataDealUtil {
         }
 
         return redata;
+    }
+
+    public static ObjVo PageDataDeal(IPage page){
+        ObjVo dataVo= new ObjVo<>();
+        if (page!=null){
+            dataVo.setSize((int)page.getSize());
+            dataVo.setCurrent((int)page.getCurrent());
+            dataVo.setTotal(page.getTotal());
+            dataVo.setPages(page.getPages());
+            dataVo.setDatalist(page.getRecords());
+        }
+        return dataVo;
     }
 
 }

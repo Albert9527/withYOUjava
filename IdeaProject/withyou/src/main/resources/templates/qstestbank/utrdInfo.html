@@ -3,7 +3,7 @@
 <head th:replace="_fragments :: head(~{::title})">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>首页</title>
+    <title>用户测试记录</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
     <link rel="stylesheet" href="../static/css/mine.css">
 </head>
@@ -45,7 +45,7 @@
         <div class="ui stackable grid height-martch">
             <div class="four wide column height-martch">
                 <div class="ui inverted vertical left menu height-martch">
-                    <div th:replace="_fragments :: menu(1,1)" class="container">
+                    <div th:replace="_fragments :: menu(4,2)" class="container">
                         <div class="header item">
                             首页
                         </div>
@@ -78,6 +78,7 @@
                                 <a class="item">志愿者信息</a>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -90,7 +91,7 @@
                         <input type="hidden" name="page">
                         <div class="inline fields">
                             <div class="field">
-                                <input type="hidden" name ="ctgy" value="user">
+                                <input type="hidden" name ="ctgy" value="utrdinfo">
                                 <input type="text" style="width: 200px !important;" name="keyWord" placeholder="search...">
                             </div>
                             <div class="field">
@@ -101,31 +102,19 @@
                         </div>
                     </div>
                     <div id="table-container">
-                        <table th:fragment="userList" class="ui celled table martch">
+                        <table th:fragment="utrdList" class="ui celled table martch">
                             <thead>
                             <th>序号</th>
-                            <th>用户昵称</th>
-                            <th>用户简介</th>
-                            <th>头像</th>
+                            <th>得分</th>
+                            <th>答案</th>
                             <th>创建时间</th>
-                            <th>当前地址</th>
-                            <th>操作</th>
                             </thead>
                             <tbody>
-                            <tr th:each="user:${userVo.datalist}">
+                            <tr th:each="utrd:${utrdVo.datalist}">
                                 <td>1</td>
-                                <td th:text="${user.nickname}">1</td>
-                                <td th:text="${user.intro}">普通用户</td>
-                                <td>
-                                    <a id="avatar" th:text="${user.avatar}">头像地址</a>
-
-                                    <!--<div class="ui active modal avatar">
-                                        <img src="getImgUrl(${user.avatar})" style="width: 200px;height: 150px !important;">
-                                    </div>-->
-
-                                </td>
-                                <td th:text="${user.location}">翻斗街翻斗花园</td>
-                                <td th:text="${user.createTime}">2020-04-12</td>
+                                <td th:text="${utrd.trScore}">得分</td>
+                                <td th:text="${utrd.trAnswer}">答案</td>
+                                <td th:text="${utrd.testTime}">2020-04-12</td>
                                 <!--  <td>2020-01-15 22:25</td>-->
                                 <td>
                                     <a href="#" class="ui mini red basic button">封禁</a>
@@ -135,11 +124,11 @@
                             <tfoot>
                             <tr>
                                 <th colspan="7">
-                                    <div class="ui mini floated pagination menu" th:if="${userVo.pages}>1">
-                                        <a onclick="page(this)" th:attr="data-page=${userVo.current}-1" class="item"
-                                           th:unless="${userVo.current}==1">上一页</a>
-                                        <a onclick="page(this)" th:attr="data-page=${userVo.current}+1" class="item"
-                                           th:unless="${userVo.current}==${userVo.pages}">下一页</a>
+                                    <div class="ui mini floated pagination menu" th:if="${utrdVo.pages}>1">
+                                        <a onclick="page(this)" th:attr="data-page=${utrdVo.current}-1" class="item"
+                                           th:unless="${utrdVo.current}==1">上一页</a>
+                                        <a onclick="page(this)" th:attr="data-page=${utrdVo.current}+1" class="item"
+                                           th:unless="${utrdVo.current}==${utrdVo.pages}">下一页</a>
                                     </div>
                                 </th>
                             </tr>
@@ -196,16 +185,9 @@
         on: 'hover'
     });
 
-
     function page(obj) {
         $("[name='page']").val($(obj).data("page"));
         searchdata();
-    }
-
-    function loaddata() {
-        $("#table-container").load(/*[[@{/admin/pageChange}]]*/"/admin/pageChange", {
-            current: $("[name='page']").val()
-        });
     }
 
     $("#search-btn").click(function () {
@@ -214,13 +196,12 @@
     });
 
     function searchdata() {
-        $("#table-container").load(/*[[@{/admin/search}]]*/"/admin/search", {
+        $("#table-container").load(/*[[@{/admin/search/qstest}]]*/"/admin/search/qstest", {
             current: $("[name='page']").val(),
             ctgy : $("[name='ctgy']").val(),
             keyWord : $("[name='keyWord']").val()
         });
     }
-
 </script>
 
 </body>

@@ -27,7 +27,7 @@
                     <div class="ui dropdown item">
                         <div class="text">
                             <img src="https://unsplash.it/100/100?image=1005" class="ui avatar image">
-                            <span th:text="${session.user.username}">Albert</span>
+                            <span th:text="${session.user.nickname}">Albert</span>
                         </div>
                         <i class="dropdown icon"></i>
                         <div class="menu">
@@ -43,6 +43,22 @@
     </a>
 </div>
 
+<!--<div th:fragment="searchDiv(ctgy)" action="#" method="post" class="ui segment form">
+    &lt;!&ndash;隐含域，用于传参&ndash;&gt;
+    <input type="hidden" name="page">
+    <div class="inline fields">
+        <div class="field">
+            <input type="hidden" name ="ctgy" value=ctgy>
+            <input type="text" style="width: 200px !important;" name="keyWord" placeholder="search...">
+        </div>
+        <div class="field">
+            <button class="ui mini teal basic button">
+                <i id="search-btn" class="search icon"></i>搜索
+            </button>
+        </div>
+    </div>
+</div>-->
+
 <div class="four wide column height-martch">
     <div class="ui inverted vertical left menu height-martch">
 
@@ -51,12 +67,14 @@
                 首页
             </div>
             <div>
-                <div class="ui item userdiv" th:classappend="${n==1} ? 'active teal'">
+                <div class="ui item menudiv" th:classappend="${n==1} ? 'active teal'">
                     用户管理 <i class="dropdown icon right"></i>
                 </div>
-                <div class="item useritem menu">
-                    <a href="#" th:href="@{/admin/user/(current=1)}" class="item" th:classappend="${n==1&&x==1} ? 'active grey'">普通用户信息</a>
-                    <a href="#" th:href="@{/admin/volunteer/(current=1)}" class="item" th:classappend="${n==1&&x==2} ? 'active grey'">志愿者信息</a>
+                <div class="item menuitem menu">
+                    <a href="#" th:href="@{/admin/user/(current=1)}" class="item"
+                       th:classappend="${n==1&&x==1} ? 'active grey'">普通用户信息</a>
+                    <a href="#" th:href="@{/admin/volunteer/(current=1)}" class="item"
+                       th:classappend="${n==1&&x==2} ? 'active grey'">志愿者信息</a>
                 </div>
             </div>
 
@@ -67,7 +85,8 @@
                 <div class="item checkitem menu">
                     <a class="item" th:classappend="${n==2&&x==1} ? 'active grey'">动态审核</a>
                     <a class="item" th:classappend="${n==2&&x==2} ? 'active grey'">志愿者认证</a>
-                    <a class="item" th:href="@{/admin/activity/(current=1,state=0)}" th:classappend="${n==2&&x==3} ? 'active grey'">活动组织申请</a>
+                    <a class="item" th:href="@{/admin/activity/(current=1,state=0)}"
+                       th:classappend="${n==2&&x==3} ? 'active grey'">活动组织申请</a>
                 </div>
             </div>
 
@@ -82,31 +101,23 @@
                        th:classappend="${n==3&&x==2} ? 'active grey'">音乐推荐</a>
                     <a class="item" th:href="@{/admin/recmd/(current=1,ctgy='videos')}"
                        th:classappend="${n==3&&x==3} ? 'active grey'">电影推荐</a>
-                    <a class="item"  th:href="@{/admin/recmd/(current=1,ctgy='cureplan')}"
+                    <a class="item" th:href="@{/admin/recmd/(current=1,ctgy='cureplan')}"
                        th:classappend="${n==3&&x==4} ? 'active grey'">自疗方案推荐</a>
 
                 </div>
             </div>
             <div>
-                <div class="ui item recommenddiv" th:classappend="${n==4} ? 'active teal'">
+                <div class="ui item qsbankdiv" th:classappend="${n==4} ? 'active teal'">
                     题库管理 <i class="dropdown icon right"></i>
                 </div>
-                <div class="item recommenditem menu">
-                    <a class="item" th:classappend="${n==4&&x==1} ? 'active grey'">抑郁自测题库</a>
-                    <a class="item" th:classappend="${n==4&&x==2} ? 'active grey'">志愿者题库</a>
+                <div class="item qsbankitem menu">
+                    <a class="item" th:href="@{/admin/qstest/getAllQs/(current=1)}"
+                       th:classappend="${n==4&&x==1} ? 'active grey'">抑郁自测题库</a>
+                    <a class="item" th:href="@{/admin/qstest/getAllUtrd/(current=1)}"
+                       th:classappend="${n==4&&x==2} ? 'active grey'">用户测试记录</a>
 
                 </div>
             </div>
-
-            <!-- <div>
-                 <div class="ui item userdiv">
-                     审核管理 <i class="dropdown icon right"></i>
-                 </div>
-                 <div class="item useritem menu">
-                     <a class="active item">动态审核</a>
-                     <a class="item">志愿者信息</a>
-                 </div>
-             </div>-->
         </div>
     </div>
 </div>
@@ -123,6 +134,9 @@
 <th:block th:fragment="script">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+
 </th:block>
+
+
 </body>
 </html>

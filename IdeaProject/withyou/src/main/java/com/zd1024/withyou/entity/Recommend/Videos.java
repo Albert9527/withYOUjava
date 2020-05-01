@@ -1,8 +1,10 @@
 package com.zd1024.withyou.entity.Recommend;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @TableName("t_rcmvideos")
@@ -43,5 +45,8 @@ public class Videos {
 
     //点赞数
     private Integer praiseCount;
+
+    @TableField(exist = false)
+    private MultipartFile upPic;
 
 }

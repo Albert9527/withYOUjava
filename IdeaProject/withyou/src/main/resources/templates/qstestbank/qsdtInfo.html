@@ -45,7 +45,7 @@
         <div class="ui stackable grid height-martch">
             <div class="four wide column height-martch">
                 <div class="ui inverted vertical left menu height-martch">
-                    <div th:replace="_fragments :: menu(3,2)" class="container">
+                    <div th:replace="_fragments :: menu(4,1)" class="container">
                         <div class="header item">
                             首页
                         </div>
@@ -90,7 +90,7 @@
                         <input type="hidden" name="page">
                         <div class="inline fields">
                             <div class="field">
-                                <input type="hidden" name ="ctgy" value="music">
+                                <input type="hidden" name ="ctgy" value="qsdtinfo">
                                 <input type="text" style="width: 200px !important;" name="keyWord" placeholder="search...">
                             </div>
                             <div class="field">
@@ -101,48 +101,43 @@
                         </div>
                     </div>
                     <div id="table-container">
-                        <table th:fragment="musicList" class="ui celled table martch">
+                        <table th:fragment="qsdtList" class="ui celled table martch">
                             <thead>
-                            <th>序号</th>
-                            <th>歌曲名称</th>
-                            <th>首图</th>
-                            <th>播放地址</th>
-                            <th>歌手名</th>
-                            <th>发布时间</th>
-                            <th>音乐简介</th>
-                            <th>分类标签</th>
-                            <th>推荐理由</th>
-                            <th>点赞数</th>
+                            <th>题目序号</th>
+                            <th>问题描述</th>
+                            <th>得分规则</th>
+                            <th>选项1</th>
+                            <th>选项2</th>
+                            <th>选项3</th>
+                            <th>选项4</th>
                             <th>操作</th>
                             </thead>
                             <tbody>
-                            <tr th:each="music:${musicVo.datalist}">
-                                <td>1</td>
-                                <td th:text="${music.rcmMusicName}">1</td>
-                                <td th:text="${music.firstPictrue}">普通用户</td>
-                                <td th:text="${music.playAddress}" class="a">头像地址</td>
-                                <td th:text="${music.singer}">翻斗街翻斗花园</td>
-                                <td th:text="${music.createTime}">2020-04-12</td>
-                                <td th:text="${music.rcmMusicIntro}">1</td>
-                                <td th:text="${music.categoryTag}">普通用户</td>
-                                <td th:text="${music.rcmReason}" class="a">头像地址</td>
-                                <td th:text="${music.praiseCount}">翻斗街翻斗花园</td>
+                            <tr th:each="qsdt:${qsdtVo.datalist}">
+                                <td th:text="${qsdt.qsNumber}">1</td>
+                                <td th:text="${qsdt.qsContent}">问题描述</td>
+                                <td th:text="${qsdt.scoreRule}">得分规则</td>
+                                <td th:text="${qsdt.qsOption1}">选项1</td>
+                                <td th:text="${qsdt.qsOption2}">选项2</td>
+                                <td th:text="${qsdt.qsOption3}">选项3</td>
                                 <!--  <td>2020-01-15 22:25</td>-->
+                                <td th:text="${qsdt.qsOption4}">选项4</td>
                                 <td>
                                     <a href="#" class="ui mini teal basic button">编辑</a>
-                                    <a href="#" th:href="@{/admin/recmd/delete(current=${musicVo.current},recmId=${music.rcmMusicId},ctgy='music')}"
+                                    <a href="#"
+                                       th:href="@{/admin/qstest/deleteQsDt/(current = ${qsdtVo.current},qsNumber = ${qsdt.qsNumber},qsId = ${qsId})}"
                                        class="ui mini red basic button">删除</a>
                                 </td>
                             </tr>
                             </tbody>
                             <tfoot>
                             <tr>
-                                <th colspan="11">
-                                    <div class="ui mini floated pagination menu" th:if="${musicVo.pages}>1">
-                                        <a onclick="page(this)" th:attr="data-page=${musicVo.current}-1" class="item"
-                                           th:unless="${musicVo.current}==1">上一页</a>
-                                        <a onclick="page(this)" th:attr="data-page=${musicVo.current}+1" class="item"
-                                           th:unless="${musicVo.current}==${musicVo.pages}">下一页</a>
+                                <th colspan="10">
+                                    <div class="ui mini floated pagination menu" th:if="${qsdtVo.pages}>1">
+                                        <a onclick="page(this)" th:attr="data-page=${qsdtVo.current}-1" class="item"
+                                           th:unless="${qsdtVo.current}==1">上一页</a>
+                                        <a onclick="page(this)" th:attr="data-page=${qsdtVo.current}+1" class="item"
+                                           th:unless="${qsdtVo.current}==${qsdtVo.pages}">下一页</a>
                                     </div>
                                     <a href="#"
                                        class="ui mini right floated teal basic button add">新增</a>
@@ -161,80 +156,64 @@
 
 <!--模态窗口-->
 <div class="ui small m-padded active modal">
-    <form id="musicform" class="ui m-margin-large form segment teal" th:action="@{/admin/recmd/addMusic}"
+    <form id="videoform" class="ui m-margin-large form segment teal" th:action="@{/admin/qstest/addqsdt}"
           method="post" enctype="multipart/form-data">
-        <h3 class="ui dividing teal header">添加音乐推荐</h3>
-        <div class="two fields">
-            <div class="field m-margin-large">
-                <label>推荐首图</label>
-                <div class="ui container teal segment">
-                    <input type="file" name="upPic" id="test-image-file"
-                           accept="image/gif, image/jpeg, image/png, image/jpg">
+        <h3 class="ui dividing teal header">添加题目</h3>
+        <div class="ui two fields required m-margin">
+            <div class="field">
+                <label>题目序号</label>
+                <div class="field">
+                    <input type="text" name="qsNumber" placeholder="题目序号">
                 </div>
             </div>
             <div class="field">
-                <div class="ui field required m-margin">
-                    <label>歌曲名称</label>
-                    <div class="field">
-                        <input type="text" name="rcmMusicName" placeholder="歌曲名称">
-                    </div>
-                </div>
-                <div class="ui required field m-margin">
-                    <label>推荐标签</label>
-                    <div class="ui left labeled action input">
-                        <div class="ui tag fluid selection dropdown multiple search">
-                            <input type="hidden" name="categoryTag">
-                            <i class="dropdown icon"></i>
-                            <div class="default text">标签</div>
-                            <div class="menu">
-                                <div class="item" data-value="舒缓纯音乐"
-                                >舒缓纯音乐
-                                </div>
-                                <div class="item" data-value="解压"
-                                >解压
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="ui three fields required m-margin">
-            <div class="five wide field">
-                <label>歌手</label>
+                <label>得分规则</label>
                 <div class="field">
-                    <input type="text" name="singer" placeholder="歌手名字">
-                </div>
-            </div>
-            <div class="field">
-                <label>播放平台</label>
-                <div class="field">
-                    <input type="text" name="playAddress" placeholder="播放平台">
-                </div>
-            </div>
-            <div class="field">
-                <label>发布日期</label>
-                <div class="field">
-                    <input type="date" name="releaseTime" placeholder="2020-04-16">
+                    <input type="text" name="scoreRule" placeholder="得分规则">
                 </div>
             </div>
         </div>
-
+        <!-- <div class="ui required field m-margin-large">
+             <label>发布日期</label>
+             <div class="field">
+                 <input type="date" name="qsCreateTime" placeholder="2020-04-16">
+             </div>
+         </div>-->
 
         <div class="required field m-margin-large">
-            <label>歌曲简介</label>
-            <textarea name="rcmMusicIntro"></textarea>
+            <label>问题描述</label>
+            <textarea name="qsContent" style="height: 50px !important;"></textarea>
         </div>
 
-        <div class="required field m-margin-large">
-            <label>推荐理由</label>
-            <textarea name="rcmReason"></textarea>
+        <div class="required field">
+            <label>选项1</label>
+            <div class="field">
+                <input type="text" name="qsOption1" placeholder="选项1">
+            </div>
+        </div>
+        <div class="required field">
+            <label>选项2</label>
+            <div class="field">
+                <input type="text" name="qsOption2" placeholder="选项2">
+            </div>
+        </div>
+        <div class="field">
+            <label>选项3</label>
+            <div class="field">
+                <input type="text" name="qsOption3" placeholder="选项3">
+            </div>
+        </div>
+        <div class="field">
+            <label>选项4</label>
+            <div class="field">
+                <input type="text" name="qsOption4" placeholder="选项4">
+            </div>
         </div>
 
         <div class="required field">
             <div class="field">
                 <input type="hidden" name="userId" th:value="${session.user.userId}">
+                <input type="hidden" name="qsId" th:value="${qsId}">
             </div>
         </div>
         <div class="required field">
@@ -286,19 +265,10 @@
         }
     );
 
-    $('.ui.qsbankdiv').click(
-        function () {
-            $('.qsbankitem').toggle();
-        }
-    );
-
     $('.ui.dropdown').dropdown({
         on: 'hover'
     });
 
-    $('.ui.tag.dropdown').dropdown({
-        allowAdditions: true
-    });
 
     $('.ui.add').click(
         function () {
@@ -307,89 +277,75 @@
     );
     $('.ui.modal').modal('hide');
 
-    $('.ui.button.cancel').click(function () {
-        $('.ui.modal').modal('hide');
-    });
+    $('.ui.button.cancel').click(
+        function () {
+            $('.ui.modal').modal('hide');
+        });
 
     function page(obj) {
         $("[name='page']").val($(obj).data("page"));
-        loaddata();
+        searchdata();
     }
 
-    function loaddata() {
-        $("#table-container").load(/*[[@{/admin/pageChange}]]*/"/admin/pageChange", {
-            current: $("[name='page']").val()
-        });
-    }
 
     $('#publish-btn').click(function () {
-        $('#musicform').submit;
+        $('#videoform').submit;
     });
 
-    $('ui.button.cancel').click(function () {
-        $('.ui.modal').modal('hide');
-    });
-
-    $('#musicform').form({
+    $('#videoform').form({
         fields: {
-            rcmMusicName: {
-                identifier: 'rcmMusicName',
+            qsNumber: {
+                identifier: 'qsNumber',
                 rules: [{
                     type: 'empty',
-                    prompt: '输入错误：歌曲名称不能为空'
+                    prompt: '输入错误：题目序号不能为空'
+                }]
+            },
+            qsContent: {
+                identifier: 'qsContent',
+                rules: [{
+                    type: 'empty',
+                    prompt: '输入错误：问题描述不能为空'
+                }]
+            },
+            scoreRule: {
+                identifier: 'scoreRule',
+                rules: [{
+                    type: 'empty',
+                    prompt: '输入错误：选项得分规则不能为空'
                 }]
             },
 
-            categoryTag: {
-                identifier: 'categoryTag',
+            qsOption1: {
+                identifier: 'qsOption1',
                 rules: [{
                     type: 'empty',
-                    prompt: '输入错误：分类标签不能为空'
+                    prompt: '输入错误：选项1不能为空'
                 }]
             },
 
-            singer: {
-                identifier: 'singer',
+            qsOption2: {
+                identifier: 'qsOption2',
                 rules: [{
                     type: 'empty',
-                    prompt: '输入错误：歌手不能为空'
+                    prompt: '输入错误：选项2不能为空'
                 }]
             },
-            playAddress: {
-                identifier: 'playAddress',
-                rules: [{
-                    type: 'empty',
-                    prompt: '输入错误：播放平台不能为空'
-                }]
-            },
-            rcmMusicIntro: {
-                identifier: 'rcmMusicIntro',
-                rules: [{
-                    type: 'empty',
-                    prompt: '输入错误：歌曲简介不能为空'
-                }]
-            },
-            rcmReason: {
-                identifier: 'rcmReason',
-                rules: [{
-                    type: 'empty',
-                    prompt: '输入错误：推荐理由不能为空'
-                }]
-            }
         }
     });
+
     $("#search-btn").click(function () {
         $("[name='page']").val(0);
         searchdata();
     });
 
     function searchdata() {
-        $("#table-container").load(/*[[@{/admin/search}]]*/"/admin/search", {
+        $("#table-container").load(/*[[@{/admin/search/qstest}]]*/"/admin/search/qstest", {
+            current: $("[name='page']").val(),
             ctgy : $("[name='ctgy']").val(),
             keyWord : $("[name='keyWord']").val()
         });
     }
-
 </script>
 
 </body>
