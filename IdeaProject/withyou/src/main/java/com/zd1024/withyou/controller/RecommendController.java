@@ -27,7 +27,6 @@ public class RecommendController {
     @GetMapping("/getAllByCtgy")
     public AndroidData getRcmdByCtgy(Integer current, @Param("ctgy") String ctgy){
        ObjVo objVo = recommendService.getAllRecommendByCtgy(current,10,ctgy);
-
        return DataDealUtil.dealdata(objVo.getDatalist());
     }
 

@@ -10,10 +10,9 @@ import com.zd1024.withyou.entityVo.ObjVo;
 import com.zd1024.withyou.service.QsTestBnakService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @Controller
@@ -32,13 +31,15 @@ public class QsTestBankController {
     }
 
     @GetMapping("/getQsDetails")
-    public AndroidData getQsDetailsbyQsID(Integer current,String qsId) {
-        List<QsDetails> qsDetails = qsTestBnakService.getQsDetailsByQsId(current,10,qsId).getDatalist();
+    public AndroidData getQsDetailsbyQsID(String qsId) {
+        List<QsDetails> qsDetails = qsTestBnakService.getQsDetailsByQsId(qsId);
         return DataDealUtil.dealdata(qsDetails);
     }
 
-    @GetMapping("/DoAnalysis")
-    public AndroidData getQsAnalysis(UserTestRecord utrd) {
+    @PostMapping("/DoAnalysis")
+    public AndroidData getQsAnalysis(@RequestBody UserTestRecord utrd) {
+        Date date = new Date(System.currentTimeMillis());
+        utrd.setTestTime(date);
         int rs = qsTestBnakService.addNewRecord(utrd);
         if (rs == 1) {
             QsAnalysis qsAnalysis = qsTestBnakService.getQsAnalysisByQsId(utrd.getQsId(), utrd.getTrScore());

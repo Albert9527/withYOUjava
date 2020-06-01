@@ -10,12 +10,10 @@ import com.zd1024.withyou.entityVo.ObjVo;
 import com.zd1024.withyou.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Date;
 import java.util.List;
 
 @Controller
@@ -48,25 +46,29 @@ public class ActivityControlle {
     /**
      * 获取活动详细信息
      *
-     * @param actId
+     * @param userid
      * @return
      */
-    @GetMapping("/getActInfo")
-    public AndroidData getActivityById(String actId) {
-        Activity activity = activityService.getActivityById(actId);
-        data = DataDealUtil.dealbeanData(activity, "活动信息查询");
+    @GetMapping("/getMyActAdmin")
+    public AndroidData getActAdminByme(String userid) {
+        List<Activity> activitys = activityService.getActivityByOption(userid);
+        data = DataDealUtil.dealdata(activitys);
+        return data;
+    }
+
+    @GetMapping("getMyAct")
+    public AndroidData getMyActByMenber(String userid) {
+        List<Activity> activities = activityService.getMyActByMenber(userid);
+        data = DataDealUtil.dealdata(activities);
         return data;
     }
 
     /**
      * 创建活动
-     *
-     * @param activity
-     * @param pic
      * @return
      */
     @PostMapping("/add")
-    public AndroidData addActivity(Activity activity, MultipartFile pic) {
+    public AndroidData addActivity(@RequestPart Activity activity,MultipartFile pic) {
         activity.setActPic(PictrueDealUtil.savePictrue(pic));
         boolean check = activityService.checkActCreateAndApply(activity.getActStartTime(), activity.getUserId());
         if (check) {
@@ -109,17 +111,18 @@ public class ActivityControlle {
 
     /**
      * 活动申请审核，由活动创建者执行
+     *
      * @param actApply
      * @return
      */
     @PostMapping("/checkApply")
-    public AndroidData checkActApply(ActApply actApply) {
+    public AndroidData checkActApply(@RequestBody ActApply actApply) {
         int rs = activityService.checkActApply(actApply);
         return data = DataDealUtil.dealdata(rs, "申请审核");
     }
 
     @GetMapping("/getMenber")
-    public AndroidData getMenberByActId(String actId){
+    public AndroidData getMenberByActId(String actId) {
         List dataList = activityService.getMenberByActId(actId);
         return DataDealUtil.dealdata(dataList);
     }

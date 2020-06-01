@@ -69,10 +69,6 @@ public class UserController {
         data = new AndroidData<>();
         data.setMsg(msg);
         data.setSuccess(success);
-       /* JSONObject jsonObject = new JSONObject();
-        jsonObject.put("success", success);
-        jsonObject.put("Msg", msg);
-        String resultVlue = jsonObject.toJSONString();*/
         return data;
     }
 
@@ -179,14 +175,13 @@ public class UserController {
 
     /**
      * 根据用户id获取该用户所有的申请
-     * @param current
      * @param userId
      * @return
      */
     @GetMapping("/MyApply")
-    public AndroidData getMyAllApply(Integer current,String userId){
-        List<ActApply> applies = activityService
-                .getActApplyByUserId(current,10,userId);
+    public AndroidData getMyAllApply(String userId){
+        List<MyApply> applies = activityService
+                .getActApplyByUserId(userId);
         return DataDealUtil.dealdata(applies);
     }
 
@@ -217,10 +212,10 @@ public class UserController {
      * @return
      */
     @PostMapping("/update/avatar")
-    public AndroidData UpdateUseravatar(String userId, MultipartFile avatar) {
+    public AndroidData UpdateUseravatar(String userid, MultipartFile avatar) {
         String picname = PictrueDealUtil.savePictrue(avatar);
         if (picname!=null){
-        int rs = userService.updateAvatar(userId, picname);
+        int rs = userService.updateAvatar(userid, picname);
         if (rs == 1) {
             return DataDealUtil.dealbeanData(picname, "头像修改");
         } else {
@@ -229,6 +224,25 @@ public class UserController {
         }else {
             return DataDealUtil.dealbeanData(null,"头像上传");
         }
+    }
+
+    /**
+     *  修改密码
+     * @Param userid:
+     * @Param password:
+     * @Return: com.zd1024.withyou.entityVo.AndroidData
+     * @Author: zhudi
+     * @Date: 2020/5/21
+     */
+    @PostMapping("/updatepswd")
+    private AndroidData updatePswd(String username,String password){
+        int rs = userService.updatePswd(username,password);
+        return DataDealUtil.dealdata(rs,"密码修改");
+    }
+
+    @GetMapping("/nickname")
+    public String getNickName(String userid){
+       return userService.getnickname(userid);
     }
 
 }
