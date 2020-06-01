@@ -12,7 +12,7 @@ public class DataDealUtil {
 
     public static AndroidData dealdata(List objlist){
         AndroidData redata = new AndroidData();
-        if (objlist.size()!=0){
+        if (objlist!=null){
             redata.setSuccess(true);
             redata.setDatalist(objlist);
             redata.setMsg("共获取到 "+objlist.size()+" 条数据");

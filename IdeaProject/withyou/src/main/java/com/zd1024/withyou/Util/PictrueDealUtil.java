@@ -21,7 +21,11 @@ public class PictrueDealUtil {
 
             //获取文件后缀名
             String suffixName = fileName.substring(fileName.lastIndexOf("."));
-            String filepath="D:/tempFiles/files/";//指定图片上传到哪个文件夹的路径
+
+            //指定图片上传到哪个文件夹的路径
+           // String filepath="D:/tempFiles/files/";//本地路径
+            String filepath="/root/img/";//服务器路径
+
            // String filepath = "/opt/MeetStoneProject/target/img/";
             // Thread.currentThread().getContextClassLoader().getResource("").getPath()+"userimg/";
 
