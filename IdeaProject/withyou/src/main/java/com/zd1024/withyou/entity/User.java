@@ -6,7 +6,7 @@ import lombok.Data;
 import java.sql.Date;
 
 @Data
-@TableName(value = "t_User")
+@TableName(value = "t_user")
 public class User {
     private String id;
     private String nickname;

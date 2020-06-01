@@ -7,7 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-@TableName("T_Acount")
+@TableName("t_acount")
 public class Acount implements Serializable {
     private String username;
     private String password;

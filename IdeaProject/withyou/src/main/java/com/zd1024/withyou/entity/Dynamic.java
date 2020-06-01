@@ -1,5 +1,6 @@
 package com.zd1024.withyou.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -11,7 +12,7 @@ import java.sql.Date;
  */
 
 @Data
-@TableName("T_Dynamic")
+@TableName("t_dynamic")
 public class Dynamic {
 
     //id
@@ -37,4 +38,11 @@ public class Dynamic {
 
     //分享数
     private Integer dyShareCount;
+
+    @TableField(exist = false)
+    private String nickname;
+
+    @TableField(exist = false)
+    private String useravatar;
+
 }

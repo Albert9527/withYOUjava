@@ -3,8 +3,10 @@ package com.zd1024.withyou.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
-@TableName("t_Actapply")
+@TableName("t_actapply")
 public class ActApply {
     //申请表ID
     private String actApplyId;
@@ -16,7 +18,7 @@ public class ActApply {
     private String userId;
 
     //申请时间
-    private String actApplyTime;
+    private Date actApplyTime;
 
     //申请理由
     private String actApplyReason;
