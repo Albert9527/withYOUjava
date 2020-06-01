@@ -352,8 +352,10 @@
         searchdata();
     });
 
+
     function searchdata() {
-        $("#table-container").load(/*[[@{/admin/search}]]*/"/admin/search", {
+        $("#table-container").load(/*[[@{/admin/search/rcminfo}]]*/"/admin/search/rcminfo", {
+            current: $("[name='page']").val(),
             ctgy : $("[name='ctgy']").val(),
             keyWord : $("[name='keyWord']").val()
         });

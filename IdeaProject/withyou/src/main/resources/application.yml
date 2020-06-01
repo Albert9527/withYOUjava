@@ -8,7 +8,10 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-
+  resources:
+    static-locations: classpath:/static,classpath:/public,classpath:/resources,classpath:/META-INF/resources,file:/root/img/
+  mvc:
+    static-path-pattern: /**
 
 #下划线和驼峰命名映射
 mybatis-plus:

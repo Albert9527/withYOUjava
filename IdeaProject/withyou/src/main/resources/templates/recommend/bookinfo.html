@@ -91,7 +91,7 @@
                         <input type="hidden" name="page">
                         <div class="inline fields">
                             <div class="field">
-                                <input type="hidden" name ="ctgy" value="booinfo">
+                                <input type="hidden" name ="ctgy" value="book">
                                 <input type="text" style="width: 200px !important;" name="keyWord" placeholder="search...">
                             </div>
                             <div class="field">
@@ -378,7 +378,8 @@
     });
 
     function searchdata() {
-        $("#table-container").load(/*[[@{/admin/search}]]*/"/admin/search", {
+        $("#table-container").load(/*[[@{/admin/search/rcminfo}]]*/"/admin/search/rcminfo", {
+            current: $("[name='page']").val(),
             ctgy : $("[name='ctgy']").val(),
             keyWord : $("[name='keyWord']").val()
         });
