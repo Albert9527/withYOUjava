@@ -21,7 +21,7 @@ public class ALoginController {
 
     @GetMapping
     public String loginPage(){
-        return "/login";
+        return "login";
     }
 
     @PostMapping("/login")
@@ -32,12 +32,15 @@ public class ALoginController {
 
        // System.out.println("》》》》》》》》》"+username+password);
         Acount acount = userService.checkAcount(username,password);
-        if (acount!=null){
+        if (acount!=null&&acount.getRole()==1){
             User user = userService.getUserinfo(acount.getUserId());
             if (user!=null)
             session.setAttribute("user",user);
             return "index";
-        }else {
+        }else if (acount!=null&&acount.getRole()!=1){
+            attributes.addFlashAttribute("message","抱歉，您不具有该系统的使用权限！");
+            return "redirect:/admin";
+        }else{
             attributes.addFlashAttribute("message","用户名或密码错误");
             return "redirect:/admin";
         }

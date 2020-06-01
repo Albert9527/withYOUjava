@@ -10,6 +10,7 @@ import com.zd1024.withyou.entity.User;
 import com.zd1024.withyou.entityVo.ObjVo;
 import com.zd1024.withyou.service.ActivityService;
 import com.zd1024.withyou.service.QsTestBnakService;
+import com.zd1024.withyou.service.RecommendService;
 import com.zd1024.withyou.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,19 +32,22 @@ public class SearchController {
     @Autowired
     private QsTestBnakService qsTestBnakService;
 
+    @Autowired
+    private RecommendService recommendService;
+
     @PostMapping("/search")
     public String searchBaseInfo(Integer current,String ctgy, String keyWord, Model model) {
         switch (ctgy) {
             case "user":
-                ObjVo<User> userVo = userService.searchUser(current,2,keyWord);
+                ObjVo<User> userVo = userService.searchUser(current,5,keyWord);
                 model.addAttribute("userVo",userVo);
                 return "userinfo::userList";
             case "volunteer":
-                ObjVo<User> vulunteerVo = userService.searchvolunteer(current,2,keyWord);
+                ObjVo<User> vulunteerVo = userService.searchvolunteer(current,5,keyWord);
                 model.addAttribute("vltuser",vulunteerVo);
                 return "volunteer::volunteerList";
             case "activity":
-                ObjVo<Activity> activityVo = activityService.searchActivity(current,2,keyWord);
+                ObjVo<Activity> activityVo = activityService.searchActivity(current,5,keyWord);
                 model.addAttribute("actVo",activityVo);
                 return "activityinfo::actList";
             default:
@@ -74,5 +78,13 @@ public class SearchController {
             default:
                 return "index";
         }
+    }
+
+    @PostMapping("/search/rcminfo")
+    public String searchRcmInfo(Integer current,String ctgy, String keyWord,String qsId, Model model) {
+        ObjVo objVo = recommendService.searchrcm(current,8,keyWord,ctgy);
+
+        model.addAttribute(ctgy+"Vo",objVo);
+        return "recommend/"+ctgy+"info::"+ctgy+"List";
     }
 }

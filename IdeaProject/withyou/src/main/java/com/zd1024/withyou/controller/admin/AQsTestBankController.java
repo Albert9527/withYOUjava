@@ -29,7 +29,7 @@ public class AQsTestBankController {
         ObjVo<QsBank> qsBankObjVo = qsTestBnakService.getAllQuestion(current, 2);
 
         model.addAttribute("qsBankVo", qsBankObjVo);
-        return "qstestbank/qsbank";
+        return "qstestbank/qsBank";
     }
 
     @PostMapping("/addqsbanke")
@@ -55,7 +55,7 @@ public class AQsTestBankController {
 
     @GetMapping("/getQsDetails")
     private String getallQsDetails(Integer current, String qsId, Model model) {
-        ObjVo<QsDetails> qsDetailsObjVo = qsTestBnakService.getQsDetailsByQsId(current, 2, qsId);
+        ObjVo<QsDetails> qsDetailsObjVo = qsTestBnakService.getQsDetailsByQsId(current,8,qsId);
 
         model.addAttribute("qsdtVo", qsDetailsObjVo);
         model.addAttribute("qsId",qsId);
