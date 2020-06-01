@@ -9,19 +9,19 @@ import java.util.List;
 
 public interface FollowMapper extends BaseMapper<Follow>{
 
-    @Select("Select u.nickname,u.avatar,u.intro,f.istwoway " +
-            "from t_User u,t_Follow f " +
+    @Select("select u.nickname,u.avatar,u.intro,f.istwoway " +
+            "from t_user u,t_follow f " +
             "where u.user_id in"+
             "( select f.target_id " +
-            "from t_Follow " +
+            "from t_follow " +
             "where f.user_id = #{userid})")
     List<Friend> getMyFollow(String userid);
 
-    @Select("Select u.nickname,u.avatar,u.intro,f.istwoway " +
-            "from t_User u,t_Follow f " +
+    @Select("select u.nickname,u.avatar,u.intro,f.istwoway " +
+            "from t_user u,t_follow f " +
             "where u.user_id in"+
             "( select f.user_id " +
-            "from t_Follow " +
+            "from t_follow " +
             "where f.target_id = #{userid})")
     List<Friend> getFollowMe(String userid);
 
@@ -30,9 +30,19 @@ public interface FollowMapper extends BaseMapper<Follow>{
             "where target_id = #{userid}")
     int updatetwoway(@Param("userid") String userid, @Param("istwoway") Integer istwoway);
 
-    @Delete("Delete from t_follow " +
+    @Delete("delete from t_follow " +
             "where user_id = #{userId} " +
             "and " +
             "target_id = #{targetId}")
     int cancelFollow(@Param("userId") String userId, @Param("targetId") String targetId);
+
+    @Select("select target_id " +
+            "from t_follow " +
+            "where user_id = #{userid}")
+    List<String> getMyFollowId(String userid);
+
+    @Select("select user_id " +
+            "from t_follow " +
+            "where target_id = #{userid}")
+    List<String> getFollowMeId(String userid);
 }

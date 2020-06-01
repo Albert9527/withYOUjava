@@ -36,4 +36,24 @@ public interface UserMapper extends BaseMapper<User> {
             "or intro like #{keyWord}")
     List<User> queryByKeyWord(String keyWord);
 
+    @Update("update t_acount " +
+            "set password = #{password} " +
+            "where username = #{username}")
+    int updatePswd(String username, String password);
+
+    @Select("select user_id " +
+            "from t_user " +
+            "where nickname like #{keyWord})")
+    List<String> selectLikeName(String keyWord);
+
+    @Select("select nickname " +
+            "from t_user " +
+            "where user_id = #{userid}")
+    String getNickNameById(String userid);
+
+
+    @Select("select avatar " +
+            "from t_user " +
+            "where user_id = #{userid}")
+    String getUsrAvatar(String userid);
 }
