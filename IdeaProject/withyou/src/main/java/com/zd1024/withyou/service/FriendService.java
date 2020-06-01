@@ -1,6 +1,7 @@
 package com.zd1024.withyou.service;
 
 import com.zd1024.withyou.entity.Friend;
+import com.zd1024.withyou.entityVo.ObjVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +17,6 @@ public interface FriendService {
     int addFollow(String userId, String targetId);
 
     int cancelFollow(String userId, String targetId);
+
+    ObjVo serachFriend(Integer current, int size, String userid, String keyWord, String ctgy);
 }

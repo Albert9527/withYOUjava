@@ -23,4 +23,12 @@ public interface UserService {
     ObjVo<User> searchUser(Integer current,Integer size,String keyWord);
 
     ObjVo<User> searchvolunteer(Integer current,Integer size,String keyWord);
+
+    int updatePswd(String username, String password);
+
+    ObjVo<User> searchuser(Integer current, Integer size, String keyWord);
+
+    String getnickname(String userid);
+
+    String getUserAvatar(String userid);
 }

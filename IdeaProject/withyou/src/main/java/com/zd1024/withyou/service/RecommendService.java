@@ -3,8 +3,6 @@ package com.zd1024.withyou.service;
 import com.zd1024.withyou.entityVo.ObjVo;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public interface RecommendService {
 
@@ -13,4 +11,6 @@ public interface RecommendService {
     int addNewRecommend(Object recommend, String ctgy);
 
     int deleteRecommendById(String recmId, String ctgy);
+
+    ObjVo searchrcm(Integer current, Integer size, String keyWord, String ctgy);
 }

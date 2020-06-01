@@ -9,9 +9,8 @@ import com.zd1024.withyou.Util.MySHA512;
 import com.zd1024.withyou.dao.ActApplyMapper;
 import com.zd1024.withyou.dao.ActivityMapper;
 import com.zd1024.withyou.dao.MenberMapper;
-import com.zd1024.withyou.entity.ActApply;
-import com.zd1024.withyou.entity.Activity;
-import com.zd1024.withyou.entity.Menber;
+import com.zd1024.withyou.dao.UserMapper;
+import com.zd1024.withyou.entity.*;
 import com.zd1024.withyou.entityVo.MenberVo;
 import com.zd1024.withyou.entityVo.ObjVo;
 import com.zd1024.withyou.service.ActivityService;
@@ -34,6 +33,9 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Autowired
     private MenberMapper menberMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public int addActivity(Activity activity) {
@@ -59,15 +61,34 @@ public class ActivityServiceImpl implements ActivityService {
     /**
      * 根据id获取活动详情
      *
-     * @param actid
+     * @param userid
      * @return
      */
     @Override
-    public Activity getActivityById(String actid) {
-        QueryWrapper<Activity> queryWrapper = new QueryWrapper();
-        queryWrapper.eq("act_id", actid);
-        Activity activity = activityMapper.selectOne(queryWrapper);
-        return activity;
+    public List getActivityByOption(String userid) {
+        List<String> actIds = menberMapper.getActId(userid);
+        if (actIds.size() != 0) {
+            QueryWrapper<Activity> queryWrapper = new QueryWrapper();
+            queryWrapper.in("act_id", menberMapper.getActId(userid));
+            return activityMapper.selectList(queryWrapper);
+        } else
+            return null;
+    }
+
+    @Override
+    public List getMyActByMenber(String userid) {
+        List<String> actIds = menberMapper.getMenberActId(userid);
+        if (actIds.size() != 0) {
+            QueryWrapper<Activity> queryWrapper = new QueryWrapper();
+            queryWrapper.in("act_id", actIds);
+            return activityMapper.selectList(queryWrapper);
+        } else
+            return null;
+    }
+
+    @Override
+    public Activity getActivityById(String actId) {
+        return activityMapper.selectById(actId);
     }
 
     @Override
@@ -121,6 +142,7 @@ public class ActivityServiceImpl implements ActivityService {
     /**
      * 活动创建和申请认证，返回改用户参与活动的时间，
      * 若同一天已有活动，则拒绝创建和申请
+     *
      * @param date
      * @param userid
      * @return
@@ -133,6 +155,8 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public int addActApply(ActApply actApply) {
+        actApply.setActAuditState(0);
+        actApply.setActApplyTime(new Date(System.currentTimeMillis()));
         actApply.setActApplyId(myactSHA512.getId("ActApply"));
         return actApplyMapper.insert(actApply);
     }
@@ -148,13 +172,8 @@ public class ActivityServiceImpl implements ActivityService {
      * @Date: 2020/4/25
      */
     @Override
-    public List<ActApply> getActApplyByUserId(Integer current, Integer size, String userid) {
-        IPage<ActApply> page = new Page<>(current, size);
-        QueryWrapper<ActApply> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", userid)
-                .orderByDesc("act_apply_time");
-        actApplyMapper.selectPage(page, queryWrapper);
-        return page.getRecords();
+    public List<MyApply> getActApplyByUserId(String userid) {
+        return actApplyMapper.getMyapply(userid);
     }
 
     /**
@@ -176,6 +195,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     /**
      * 审核活动的用户申请，在ActivityController中被调用，由活动组织者执行
+     *
      * @param actApply
      * @return
      */
@@ -198,25 +218,101 @@ public class ActivityServiceImpl implements ActivityService {
         }
     }
 
+
     @Override
     public List<MenberVo> getMenberByActId(String actId) {
         return menberMapper.queryMenberInfoByActId(actId);
     }
 
     @Override
-    public ObjVo<Activity> searchActivity(Integer current,Integer size,String keyWord) {
-        IPage<Activity> page = new Page<>(current,size);
+    public ObjVo<Activity> searchActivity(Integer current, Integer size, String keyWord) {
+        IPage<Activity> page = new Page<>(current, size);
 
         QueryWrapper<Activity> queryWrapper = new QueryWrapper();
-        queryWrapper.like("act_title",keyWord)
+        queryWrapper.like("act_title", keyWord)
                 .or()
-                .like("act_address",keyWord)
+                .like("act_address", keyWord)
                 .or()
-                .like("act_intro",keyWord)
+                .like("act_intro", keyWord)
                 .or()
-                .like("act_tag",keyWord);
-        activityMapper.selectPage(page,queryWrapper);
+                .like("act_tag", keyWord);
+        activityMapper.selectPage(page, queryWrapper);
 
         return DataDealUtil.PageDataDeal(page);
+    }
+
+    @Override
+    public ObjVo<Activity> searchActive(Integer current, Integer size, String keyWord, String ctgy, String userid) {
+
+        IPage<Activity> actpage = new Page<>(current, size);
+        QueryWrapper<Activity> qwact = new QueryWrapper();
+
+        List<String> joinactIds = menberMapper.getMenberActId(userid);
+        List<String> optionactIds = menberMapper.getActId(userid);
+
+        switch (ctgy) {
+            case "allact":
+                qwact.or(qw -> qw.like("act_title", keyWord)
+                                .like("act_address", keyWord)
+                                .like("act_intro", keyWord)
+                                .like("act_tag", keyWord))
+                        .eq("act_audit_state", 1);
+                activityMapper.selectPage(actpage, qwact);
+                return DataDealUtil.PageDataDeal(actpage);
+
+            case "optionact":
+                if (optionactIds.size() != 0) {
+                    qwact.or(qw -> qw.like("act_title", keyWord)
+                            .like("act_address", keyWord)
+                            .like("act_intro", keyWord)
+                            .like("act_tag", keyWord))
+                            .eq("act_audit_state", 1)
+                            .in("user_id", optionactIds);
+                    activityMapper.selectPage(actpage, qwact);
+                }
+                return DataDealUtil.PageDataDeal(actpage);
+
+            case "joinact":
+                if (joinactIds.size() != 0) {
+                    qwact.or(qw -> qw.like("act_title", keyWord)
+                            .like("act_address", keyWord)
+                            .like("act_intro", keyWord)
+                            .like("act_tag", keyWord))
+                            .eq("act_audit_state", 1)
+                            .in("user_id", joinactIds);
+                    activityMapper.selectPage(actpage, qwact);
+                }
+                return DataDealUtil.PageDataDeal(actpage);
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public ObjVo serach(Integer current, Integer size, String keyWord, String ctgy, String userid) {
+
+        switch (ctgy) {
+            case "apply":
+                IPage<ActApply> applypage = new Page<>(current, size);
+
+                QueryWrapper<ActApply> qwapply = new QueryWrapper();
+                qwapply.like("act_apply_reason", keyWord)
+                        .or()
+                        .like("act_audit_state", keyWord)
+                        .or()
+                        .in("user_id", userMapper.selectLikeName("%" + keyWord + "%"));
+                actApplyMapper.selectPage(applypage, qwapply);
+                return DataDealUtil.PageDataDeal(applypage);
+
+            case "menber":
+                IPage<Menber> menberpage = new Page<>(current, size);
+
+                QueryWrapper<Menber> qwmenber = new QueryWrapper();
+                qwmenber.in("user_id", userMapper.selectLikeName("%" + keyWord + "%"));
+                menberMapper.selectPage(menberpage, qwmenber);
+                return DataDealUtil.PageDataDeal(menberpage);
+            default:
+                return null;
+        }
     }
 }

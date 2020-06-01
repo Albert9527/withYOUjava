@@ -2,6 +2,7 @@ package com.zd1024.withyou.service;
 
 import com.zd1024.withyou.entity.ActApply;
 import com.zd1024.withyou.entity.Activity;
+import com.zd1024.withyou.entity.MyApply;
 import com.zd1024.withyou.entityVo.MenberVo;
 import com.zd1024.withyou.entityVo.ObjVo;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,10 @@ public interface ActivityService {
 
     ObjVo<Activity> getActivityByState(Integer current,Integer size,int state);
 
+    List<Activity> getActivityByOption(String userid);
+
+    List<Activity> getMyActByMenber(String userid);
+
     Activity getActivityById(String actId);
 
     int deleteActivityById(String actId);
@@ -28,7 +33,7 @@ public interface ActivityService {
 
     int addActApply(ActApply actApply);
 
-    List<ActApply> getActApplyByUserId(Integer current,Integer size,String userid);
+    List<MyApply> getActApplyByUserId(String userid);
 
     List<ActApply> getApplyByMenber(Integer current,Integer size,String userid);
 
@@ -37,4 +42,8 @@ public interface ActivityService {
     List<MenberVo> getMenberByActId(String actId);
 
     ObjVo<Activity> searchActivity(Integer current,Integer size,String keyWord);
+
+    ObjVo searchActive(Integer current, Integer size, String keyWord, String ctgy,String userid);
+
+    ObjVo serach(Integer current, Integer size, String keyWord, String ctgy,String userid);
 }

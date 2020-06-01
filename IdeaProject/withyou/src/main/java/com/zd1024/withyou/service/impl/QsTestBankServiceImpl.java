@@ -2,7 +2,6 @@ package com.zd1024.withyou.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zd1024.withyou.Util.DataDealUtil;
 import com.zd1024.withyou.Util.MySHA512;
@@ -15,18 +14,17 @@ import com.zd1024.withyou.entity.QsTestBank.QsAnalysis;
 import com.zd1024.withyou.entity.QsTestBank.QsBank;
 import com.zd1024.withyou.entity.QsTestBank.QsDetails;
 import com.zd1024.withyou.entity.QsTestBank.UserTestRecord;
+import com.zd1024.withyou.entityVo.AndroidData;
 import com.zd1024.withyou.entityVo.ObjVo;
 import com.zd1024.withyou.service.QsTestBnakService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import sun.rmi.runtime.Log;
 
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 @Service
 public class QsTestBankServiceImpl implements QsTestBnakService {
@@ -78,12 +76,21 @@ public class QsTestBankServiceImpl implements QsTestBnakService {
     }
 
     @Override
-    public ObjVo getQsDetailsByQsId(Integer current, Integer size, String qsId) {
+    public List<QsDetails> getQsDetailsByQsId(String qsId) {
         QueryWrapper<QsDetails> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("qs_id", qsId)
                 .orderByAsc("qs_number");
 
-        IPage<QsDetails> page = new Page<>(current, size);
+        return qsDetailsMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public ObjVo getQsDetailsByQsId(Integer current,Integer size,String qsId) {
+        QueryWrapper<QsDetails> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("qs_id", qsId)
+                .orderByAsc("qs_number");
+
+        IPage<QsDetails> page = new Page<>(current,size);
         qsDetailsMapper.selectPage(page, queryWrapper);
 
         return DataDealUtil.PageDataDeal(page);

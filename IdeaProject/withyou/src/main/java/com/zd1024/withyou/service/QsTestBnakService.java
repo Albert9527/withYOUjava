@@ -4,6 +4,7 @@ import com.zd1024.withyou.entity.QsTestBank.QsAnalysis;
 import com.zd1024.withyou.entity.QsTestBank.QsBank;
 import com.zd1024.withyou.entity.QsTestBank.QsDetails;
 import com.zd1024.withyou.entity.QsTestBank.UserTestRecord;
+import com.zd1024.withyou.entityVo.AndroidData;
 import com.zd1024.withyou.entityVo.ObjVo;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,13 @@ import java.util.Map;
 public interface QsTestBnakService {
     ObjVo getAllQuestion(Integer current, Integer size);
 
-    ObjVo getQsDetailsByQsId(Integer curren,Integer size,String qsId);
+    List<QsDetails> getQsDetailsByQsId(String qsId);
+
+    ObjVo<QsDetails> getQsDetailsByQsId(Integer current,Integer size,String qsId);
 
     QsAnalysis getQsAnalysisByQsId(String qsId,Integer score);
 
-    ObjVo getQsAnalysisByQsId(Integer current,Integer size,String qsId);
+    ObjVo<QsAnalysis> getQsAnalysisByQsId(Integer current,Integer size,String qsId);
 
     int addNewRecord(UserTestRecord utrd);
 

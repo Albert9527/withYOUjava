@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
         user.setId(mySHA512.getId("user"));
         user.setCreateTime(new Date(System.currentTimeMillis()));
         user.setNickname(username);
+        user.setAvatar("catavatar.jpg");
         return userMapper.insert(user);
     }
 
@@ -133,4 +134,31 @@ public class UserServiceImpl implements UserService {
 
         return DataDealUtil.PageDataDeal(page);
     }
+
+    @Override
+    public int updatePswd(String username, String password) {
+        return userMapper.updatePswd(username,password);
+    }
+
+    @Override
+    public ObjVo<User> searchuser(Integer current, Integer size, String keyWord) {
+        IPage<User> page = new Page<>(current,size);
+        QueryWrapper<User> qwuser = new QueryWrapper<>();
+        qwuser.like("nickname",keyWord)
+                .or()
+                .eq("user_id",acountMapper.selectOne(new QueryWrapper<Acount>().eq("username",keyWord)).getUserId());
+        userMapper.selectPage(page,qwuser);
+        return DataDealUtil.PageDataDeal(page);
+    }
+
+    @Override
+    public String getnickname(String userid) {
+        return userMapper.getNickNameById(userid);
+    }
+
+    @Override
+    public String getUserAvatar(String userid) {
+        return userMapper.getUsrAvatar(userid);
+    }
+
 }

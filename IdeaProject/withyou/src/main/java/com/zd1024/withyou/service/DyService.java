@@ -10,6 +10,8 @@ import java.util.List;
 @Service
 public interface DyService {
 
+    ObjVo serach(Integer current, Integer size, String keyWord, String userid);
+
     //获取关注的人的动态
     List<Dynamic> getMyFollowDynamic(String userid);
 
